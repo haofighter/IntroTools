@@ -1,0 +1,89 @@
+//apply plugin: 'com.android.application'  //转为APP 需要
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'org.greenrobot.greendao'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+//        applicationId "com.intro.hao.mytools"   //转为APP 需要
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "2.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    greendao {
+        schemaVersion defaultConfig.versionCode            //数据库版本跟随系统版本
+        daoPackage 'com.myself.show.show.sql'  //自动生成的工具类的包名
+        targetGenDir 'src/main/java'                  //路径
+
+    }
+
+//    /**
+//     * 多渠道打包配置
+//     * 可以在manifst中设置
+//     * <meta-data android:name="APK_SHOW" android:value="${APK_SHOW_VALUE}" />
+//     * name 和value 属性用于自定义
+//     **/
+//    flavorDimensions 'api' //
+//    productFlavors {
+//        wandoujia {}
+//        baidu {}
+//        xiaomi {}
+//    }
+//
+//    /**
+//     * 通用打包配置
+//     */
+//    productFlavors.all {
+//        flavor -> flavor.manifestPlaceholders = [APK_SHOW_VALUE: name]
+//    }
+//    /** *****************************************************************/
+//
+//    //3.0以后的打包规则
+//    android.applicationVariants.all { variant ->
+//        variant.outputs.all {
+//            outputFileName = "haoTools_${variant.productFlavors[0].name}_v${variant.versionName}.apk"
+//        }
+//    }
+
+    //加载lib中的库文件
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+//获取时间
+def releaseTime() {
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
+}
+
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.retrofit2:converter-scalars:2.3.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.7.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'com.coolerfall:android-app-daemon:1.2.0'//守护进程库
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'jp.wasabeef:glide-transformations:2.0.1'//高斯模糊的库 配合glide使用
+    compile 'com.android.support:cardview-v7:26.1.0'
+    compile 'com.android.support:design:26.1.0'
+    compile 'org.greenrobot:greendao:3.2.2'
+}

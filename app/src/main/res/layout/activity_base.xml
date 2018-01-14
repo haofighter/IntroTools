@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.intro.hao.mytools.customview.FlowingDraw.FlowingDrawer xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/flowingDrawer_base"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    app:edMenuBackground="@color/colorAccent"
+    app:edMenuSize="260dp"
+    app:edPosition="1">
+
+
+    <RelativeLayout
+        android:id="@+id/show_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"></RelativeLayout>
+
+
+    <com.intro.hao.mytools.customview.FlowingDraw.FlowingMenuLayout
+        android:id="@+id/flowing_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/flowing_content_layout" />
+    </com.intro.hao.mytools.customview.FlowingDraw.FlowingMenuLayout>
+
+</com.intro.hao.mytools.customview.FlowingDraw.FlowingDrawer>

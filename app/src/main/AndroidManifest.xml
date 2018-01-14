@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.intro.hao.mytools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
+        android:name=".base.App"
+        android:allowBackup="false"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Design.Light.NoActionBar">
+
+        <!--多渠道打包配置-->
+        <!--<meta-data-->
+        <!--android:name="APK_SHOW"-->
+        <!--android:value="${APK_SHOW_VALUE}" />-->
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".home.activity.HomeActivity" />
+
+        <receiver android:name=".home.receiver.AlarmReceiver" />
+        <service android:name=".home.service.HorizonService" />
+    </application>
+
+</manifest>
