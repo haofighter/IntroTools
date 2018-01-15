@@ -7,12 +7,13 @@
     <com.intro.hao.mytools.view.NavigationBar
         android:id="@+id/navigationbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.intro.hao.mytools.view.NavigationBar>
+        android:layout_height="wrap_content"
+        android:background="@color/green"></com.intro.hao.mytools.view.NavigationBar>
 
     <include layout="@layout/line_gray_view" />
 
     <RelativeLayout
-        android:id="@+id/main_content"
+        android:id="@+id/tool_base_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></RelativeLayout>
 </LinearLayout>

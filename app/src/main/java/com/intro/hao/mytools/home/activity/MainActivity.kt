@@ -1,8 +1,7 @@
-package com.intro.hao.mytools
+package com.intro.hao.mytools.home.activity
 
 import android.Manifest
-import android.app.AlarmManager
-import android.support.v7.app.AppCompatActivity
+import android.annotation.TargetApi
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,34 +14,26 @@ import kotlinx.android.synthetic.main.activity_main.*
 import rx.android.schedulers.AndroidSchedulers
 import rx.functions.Action1
 import rx.schedulers.Schedulers
-import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
 import android.support.annotation.RequiresApi
 import com.bumptech.glide.Glide
+import com.intro.hao.mytools.R
+import com.intro.hao.mytools.base.BackCall
+import com.intro.hao.mytools.base.SpecialBackCall
+import com.intro.hao.mytools.base.ToolBarBaseActivity
 import com.intro.hao.mytools.constant.AppConstant
-import com.intro.hao.mytools.home.activity.HomeActivity
-import com.intro.hao.mytools.home.receiver.AlarmReceiver
 import jp.wasabeef.glide.transformations.BlurTransformation
 import com.intro.hao.mytools.home.service.HorizonService
 
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.set_a_clock -> {
-                ToastUtils().showMessage("设置定时任务")
-                var intent = Intent(this, HorizonService::class.java)
-                intent.putExtra(AppConstant().HORIZENSERVICE_TIME, System.currentTimeMillis() + 2000)
-                startService(intent)
-            }
-        }
+class MainActivity : ToolBarBaseActivity(), View.OnClickListener {
+    override fun LayoutID(): Int {
+        return R.layout.activity_main
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun initView() {
+        navigation.setTitle(this.localClassName)
 
         if (PromisionUtils(this).ApplyPromise(this, Manifest.permission.INTERNET, 0)) {
             RetrofitManager().builder(Service::class.java).getCarInfoObservable().subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
@@ -62,8 +53,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    override fun onResume() {
-        super.onResume()
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.set_a_clock -> {
+                ToastUtils().showMessage("设置定时任务")
+                var intent = Intent(this, HorizonService::class.java)
+                intent.putExtra("backcall", object : SpecialBackCall() {
+                    override fun deal(vararg objects: Any) {
+                        Log.i("tag", "定时任务回调启动了")
+                        ToastUtils().showMessage("定时任务回调启动了·")
+                    }
+                })
+                intent.putExtra(AppConstant().HORIZENSERVICE_TIME, System.currentTimeMillis() + 1000)
+                startService(intent)
+            }
+        }
     }
 }
 

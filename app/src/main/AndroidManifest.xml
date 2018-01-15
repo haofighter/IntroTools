@@ -6,6 +6,7 @@
     <application
         android:name=".base.App"
         android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
 
@@ -14,11 +15,11 @@
         <!--android:name="APK_SHOW"-->
         <!--android:value="${APK_SHOW_VALUE}" />-->
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".home.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 

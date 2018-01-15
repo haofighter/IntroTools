@@ -11,6 +11,8 @@ import android.os.IBinder
 import android.text.format.DateUtils
 import android.util.Log
 import com.intro.hao.mytools.Utils.DataUtils
+import com.intro.hao.mytools.base.SpecialBackCall
+import com.intro.hao.mytools.constant.AppConstant
 import java.util.*
 
 
@@ -28,11 +30,11 @@ class HorizonService : Service() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         val manager = getSystemService(ALARM_SERVICE) as AlarmManager
-        var clockTime = intent.getLongExtra("ClockTime", 0);
+        var clockTime = intent.getLongExtra(AppConstant().HORIZENSERVICE_TIME, 0);
         Log.i("clockTime", DataUtils().FormatDate(clockTime))
         val i = Intent(this, AlarmReceiver::class.java)
         val pi = PendingIntent.getBroadcast(this, 0, i, 0)
-        manager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, clockTime, 24 * 60 * 60 * 1000, pi)
+        manager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, clockTime, 100, pi)
         return super.onStartCommand(intent, flags, startId)
     }
 }

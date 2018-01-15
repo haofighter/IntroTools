@@ -19,6 +19,7 @@ public class LoadingView {
         initView();
     }
 
+
     protected int getLayoutID(boolean isCustom) {
         if (!isCustom) {
             return R.layout.view_loading_layout;

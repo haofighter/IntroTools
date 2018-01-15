@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.intro.hao.mytools.Utils.ToastUtils
+import com.intro.hao.mytools.base.SpecialBackCall
 import com.intro.hao.mytools.home.service.HorizonService
 
 /**
@@ -14,6 +15,10 @@ class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         ToastUtils().showMessage("闹铃响了, 可以做点事情了~~")
         Log.i("tag", "触发了闹铃");
+        if (intent!!.getSerializableExtra("backcall") != null) {
+            var backCall = intent.getSerializableExtra("backcall") as SpecialBackCall
+            backCall.deal("")
+        }
         val i = Intent(context, HorizonService::class.java)
         context!!.startService(i)
     }

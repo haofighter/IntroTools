@@ -1,5 +1,5 @@
-//apply plugin: 'com.android.application'  //转为APP 需要
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'  //转为APP 需要
+//apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
@@ -9,7 +9,7 @@ apply plugin: 'org.greenrobot.greendao'
 android {
     compileSdkVersion 26
     defaultConfig {
-//        applicationId "com.intro.hao.mytools"   //转为APP 需要
+        applicationId "com.intro.hao.mytools"   //转为APP 需要
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 1

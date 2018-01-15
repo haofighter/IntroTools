@@ -34,7 +34,6 @@ class NavigationBar : RelativeLayout {
         left_layout.setOnClickListener(buttonListener)
         center!!.setOnClickListener(buttonListener)
         right_layout!!.setOnClickListener(buttonListener)
-        setBackgroundColor(Color.WHITE)
     }
 
     fun setOurSelfLeft(v: View) {

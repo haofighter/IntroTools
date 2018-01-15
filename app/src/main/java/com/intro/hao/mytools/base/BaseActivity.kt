@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.flowing_content_layout.*
 /**
  * 基础Activity
  */
-open abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,43 +29,16 @@ open abstract class BaseActivity : AppCompatActivity() {
         super.setContentView(R.layout.activity_base)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         window.statusBarColor = ContextCompat.getColor(this, R.color.traslant)
-
-        //初始化界面
-        setBaseContentView()
-        setBaseFlowingDrawerContentView()
     }
 
-    /**
-     * 抽象方法 用于方便放置初始填充的界面
-     * 如不需要填充  可后续调用setContentView(layout: View)  来填充
-     */
-    abstract fun BaseContentLayoutId(): Int
-
-    abstract fun setContentView(): Int
-
-    /**
-     * 抽象方法 用于方便放置初始侧滑的界面
-     * 如不需要填充  可后续调用setFlowingDrawerContentView(layout: View)  来填充
-     */
-    abstract fun setFlowingDrawerContentView(): Int
-
-    fun setBaseContentView() {
-        if (BaseContentLayoutId() == 0) {
-            Log.i("TAG", "BaseAcitivity的内容布局没有填充");
-        } else {
-            setContentView(LayoutInflater.from(this).inflate(BaseContentLayoutId(), null))
-        }
-    }
 
     override fun setContentView(layoutId: Int) {
-        show_content.removeAllViews()
-        show_content.addView(LayoutInflater.from(this).inflate(BaseContentLayoutId(), null))
-        flowingDrawer_base.setTouchMode(ElasticDrawer.TOUCH_MODE_NONE) //设置策划栏的触发模式
+        setContentView(LayoutInflater.from(this).inflate(layoutId, null))
     }
 
     override fun setContentView(layout: View) {
-        show_content.removeAllViews()
-        show_content.addView(layout)
+        base_content.removeAllViews()
+        base_content.addView(layout)
         flowingDrawer_base.setTouchMode(ElasticDrawer.TOUCH_MODE_NONE) //设置策划栏的触发模式
     }
 
@@ -78,13 +51,8 @@ open abstract class BaseActivity : AppCompatActivity() {
         return flowing_content_layout
     }
 
-    fun setBaseFlowingDrawerContentView() {
-        if (setFlowingDrawerContentView() == 0) {
-            Log.i("TAG", "BaseAcitivity的内容侧滑布局没有填充");
-            closeSiding()
-        } else {
-            setFlowingDrawerContentView(LayoutInflater.from(this).inflate(setFlowingDrawerContentView(), null))
-        }
+    fun setBaseFlowingDrawerContentView(layoutId: Int) {
+        setFlowingDrawerContentView(LayoutInflater.from(this).inflate(layoutId, null))
     }
 
     fun setFlowingDrawerContentView(layout: View) {
