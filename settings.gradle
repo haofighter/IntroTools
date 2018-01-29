@@ -1,1 +1,1 @@
-include ':app', ':clock', ':secret', ':guide', ':floatactionbar'
+include ':app', ':secret', ':guide', ':floatactionbar'
