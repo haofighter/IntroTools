@@ -1,1 +1,1 @@
-include ':app', ':secret', ':guide', ':floatactionbar'
+include ':app', ':secret'

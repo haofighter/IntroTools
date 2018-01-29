@@ -8,8 +8,8 @@ import com.intro.hao.mytools.Utils.AnimalUtils
 import com.intro.hao.mytools.Utils.KeyboardChangeListener
 import com.intro.hao.mytools.Utils.SharePreferenceUtils
 import com.intro.hao.mytools.base.App
+import com.intro.project.secret.TestAcivity.TestActivity
 import com.intro.project.secret.base.BaseActiivty
-import com.intro.project.secret.moudle.MainTestKeyboradActivity
 import com.intro.project.secret.moudle.WelcomeActivity
 import com.intro.project.secret.moudle.note.modle.NoteInfo
 import com.vicpin.krealmextensions.queryAll
@@ -23,7 +23,7 @@ class MainActivity : BaseActiivty(), View.OnClickListener {
                 startActivity(Intent(this, WelcomeActivity::class.java))
             }
             R.id.testAnimal -> {
-                startActivity(Intent(this, MainTestKeyboradActivity::class.java))
+                startActivity(Intent(this, TestActivity::class.java))
             }
 
             R.id.left -> {

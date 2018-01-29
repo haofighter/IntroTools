@@ -3,9 +3,7 @@ package com.intro.project.secret.base
 import com.intro.hao.mytools.base.ToolBarBaseActivity
 import com.intro.hao.mytools.view.NavigationBar
 import com.intro.hao.mytools.view.NavigationTag
-import com.intro.project.secret.moudle.view.FLowingLayout
-import io.realm.Realm
-import io.realm.RealmConfiguration
+import com.intro.project.secret.moudle.view.SideLayout
 
 
 /**
@@ -14,7 +12,7 @@ import io.realm.RealmConfiguration
 abstract class BaseActiivty : ToolBarBaseActivity() {
     override fun initView() {
         //初始化realm   并给定一个默认设置
-        setFlowingDrawerContentView(FLowingLayout(this))
+        setFlowingDrawerContentView(SideLayout(this))
         navigation.setTitle("首页")
         navigation.addListener(object : NavigationBar.NavigationListener {
             override fun onButtonClick(button: NavigationTag): Boolean {
