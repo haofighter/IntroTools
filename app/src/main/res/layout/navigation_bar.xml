@@ -2,17 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/bar_main_layout"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="55dp"
     android:background="@color/traslant"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:gravity="center_vertical">
 
     <LinearLayout
         android:id="@+id/left_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:minWidth="50dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -21,7 +19,8 @@
             android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:padding="5dp" />
+            android:layout_margin="8dp"
+            android:src="@mipmap/mune" />
 
         <TextView
             android:id="@+id/tv_navigation_left"
@@ -70,9 +69,9 @@
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
+            android:layout_margin="5dp"
             android:layout_marginRight="5dp"
             android:background="@null"
-            android:padding="5dp"
             android:scaleType="matrix"
             android:visibility="gone" />
 

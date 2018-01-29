@@ -3,12 +3,14 @@
     package="com.intro.hao.mytools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <application
+    <!--
         android:name=".base.App"
-        android:allowBackup="false"
+        android:theme="@style/Theme.Design.Light.NoActionBar"
         android:icon="@mipmap/ic_launcher"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.Design.Light.NoActionBar">
+        android:allowBackup="false"//是否允许备份-->
+    <application
+
+        android:supportsRtl="true">
 
         <!--多渠道打包配置-->
         <!--<meta-data-->
@@ -16,17 +18,15 @@
         <!--android:value="${APK_SHOW_VALUE}" />-->
 
         <activity android:name=".home.activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
         <activity android:name=".home.activity.HomeActivity" />
 
-        <receiver android:name=".home.receiver.AlarmReceiver" />
-        <service android:name=".home.service.HorizonService" />
     </application>
 
 </manifest>

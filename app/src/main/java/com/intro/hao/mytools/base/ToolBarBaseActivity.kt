@@ -1,20 +1,18 @@
 package com.intro.hao.mytools.base
 
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
-import android.util.Log
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import com.intro.hao.mytools.R
 import com.intro.hao.mytools.Utils.SystemUtils
 import com.intro.hao.mytools.view.NavigationBar
 import kotlinx.android.synthetic.main.toolbar_base_activity.*
-import android.graphics.drawable.BitmapDrawable
-import android.support.v4.content.ContextCompat
 
 
 /**
@@ -35,6 +33,8 @@ abstract class ToolBarBaseActivity : BaseActivity() {
     abstract fun initView()
 
     abstract fun LayoutID(): Int
+
+
     /**
      * 初始化界面
      */

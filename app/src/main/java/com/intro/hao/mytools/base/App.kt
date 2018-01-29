@@ -5,12 +5,11 @@ import android.app.Application
 import android.content.res.Configuration
 import android.content.res.Resources
 import com.intro.hao.mytools.Utils.listener.OrientationListener
-import java.util.ArrayList
 
 /**
  * Created by haozhang on 2018/1/3.
  */
-class App : Application() {
+open class App : Application() {
 
     companion object {
         lateinit var instance: App

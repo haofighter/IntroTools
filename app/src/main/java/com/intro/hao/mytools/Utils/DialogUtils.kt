@@ -5,11 +5,9 @@ import android.content.Context
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.intro.hao.mytools.R
 import com.intro.hao.mytools.Utils.view.LoadingView
-import com.intro.hao.mytools.base.App
 import com.intro.hao.mytools.base.BackCall
 
 /**
@@ -40,22 +38,22 @@ class DialogUtils {
     fun showInfoDialog(context: Context,
                        tv_titel: String?, content: String, conf: String?, canc: String?,
                        call: BackCall?): Dialog {
-        val dlg = Dialog(context, R.style.noDialogTheme)
-        val inflater = context
+        var dlg = Dialog(context, R.style.noDialogTheme)
+        var inflater = context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val layout = inflater!!.inflate(
-                R.layout.dialog_show_info, null) as LinearLayout
-        val title = layout.findViewById<TextView>(R.id.title)
+        var layout = inflater!!.inflate(
+                R.layout.dialog_show_info, null)
+        var title = layout.findViewById<TextView>(R.id.title)
         if (tv_titel == null) {
             title.visibility = View.GONE
         } else {
             title.visibility = View.VISIBLE
             title.text = tv_titel
         }
-        val cont = layout.findViewById<TextView>(R.id.content)
+        var cont = layout.findViewById<TextView>(R.id.content)
         cont.text = content
-        val confirm = layout.findViewById<TextView>(R.id.confirm)
-        val cancel = layout.findViewById<TextView>(R.id.cancel)
+        var confirm = layout.findViewById<TextView>(R.id.confirm)
+        var cancel = layout.findViewById<TextView>(R.id.cancel)
         if (conf == null) {
             confirm.visibility = View.GONE
             layout.findViewById<View>(R.id.line2).visibility = View.GONE
@@ -98,13 +96,14 @@ class DialogUtils {
                         }
                     }
                 })
-        val w = dlg.window
-        val lp = w!!.attributes
+        var w = dlg.window
+        var lp = w!!.attributes
         lp.gravity = Gravity.CENTER
         dlg.onWindowAttributesChanged(lp)
         dlg.setCanceledOnTouchOutside(true)
         dlg.setContentView(layout)
         dlg.setCancelable(false)
+        dlg.show()
         return dlg
     }
 

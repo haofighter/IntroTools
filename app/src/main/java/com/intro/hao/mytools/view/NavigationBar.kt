@@ -2,9 +2,9 @@ package com.intro.hao.mytools.view
 
 import android.app.Activity
 import android.content.Context
-import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
@@ -18,10 +18,12 @@ class NavigationBar : RelativeLayout {
 
 
     interface NavigationListener {
-        fun onButtonClick(button: NavigationTag)
+        //返回false  表示允许执行后续添加的监听
+        fun onButtonClick(button: NavigationTag): Boolean
     }
 
     private var mListener: NavigationListener? = null
+    private var addListener: MutableList<NavigationListener> = mutableListOf()
 
     constructor(context: Context) : this(context, null)
 
@@ -61,25 +63,38 @@ class NavigationBar : RelativeLayout {
         super.setBackgroundColor(color)
     }
 
+    fun addListener(listener: NavigationListener) {
+        addListener.add(listener)
+    }
+
     fun setListener(listener: NavigationListener) {
-        this.mListener = listener
+        addListener.clear()
+        addListener.add(listener)
+    }
+
+    fun clearListener(listener: NavigationListener) {
+        addListener.clear()
     }
 
     internal var buttonListener: View.OnClickListener = View.OnClickListener { v ->
+        Log.i("view的id", "" + v.id + "  " + R.id.right_layout + "   " + R.id.tv_navigation_right)
         if (v.id == R.id.left_layout) {
-            if (mListener != null) {
-                mListener!!.onButtonClick(NavigationTag.LEFT_VIEW)
+            for (it in addListener) {
+                if (it.onButtonClick(NavigationTag.LEFT_VIEW))
+                    break
             }
         }
-        if (v.id == R.id.right) {
-            if (mListener != null) {
-                mListener!!.onButtonClick(NavigationTag.RIGHT_VIEW)
+        if (v.id == R.id.right_layout) {
+            for (it in addListener) {
+                if (it.onButtonClick(NavigationTag.RIGHT_VIEW))
+                    break
             }
         }
 
         if (v.id == R.id.center) {
-            if (mListener != null) {
-                mListener!!.onButtonClick(NavigationTag.MIDDLE_VIEW)
+            for (it in addListener) {
+                if (it.onButtonClick(NavigationTag.MIDDLE_VIEW))
+                    break
             }
         }
     }

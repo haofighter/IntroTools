@@ -33,7 +33,6 @@
             android:gravity="center"
             android:padding="10dp"
             android:text="设置一个naoling" />
-
     </LinearLayout>
 
 

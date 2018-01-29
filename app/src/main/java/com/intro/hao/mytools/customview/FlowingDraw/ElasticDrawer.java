@@ -291,7 +291,7 @@ public abstract class ElasticDrawer extends ViewGroup {
 
         mMenuSize = a.getDimensionPixelSize(R.styleable.ElasticDrawer_edMenuSize, dpToPx(240));
 
-        mMenuBackground = a.getColor(R.styleable.ElasticDrawer_edMenuBackground, 0xFFdddddd);
+        mMenuBackground = a.getColor(R.styleable.ElasticDrawer_edMenuBackground, 0xFFFFFFFF);
 
         mTouchBezelSize = a.getDimensionPixelSize(R.styleable.ElasticDrawer_edTouchBezelSize,
                 dpToPx(DEFAULT_DRAG_BEZEL_DP));

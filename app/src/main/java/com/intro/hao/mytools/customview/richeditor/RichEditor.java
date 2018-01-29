@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -90,6 +91,32 @@ public class RichEditor extends WebView {
         this(context, attrs, android.R.attr.webViewStyle);
     }
 
+
+    public interface OnTouchScreenListener {
+        void onTouchScreen();
+
+        void onReleaseScreen();
+    }
+
+    OnTouchScreenListener onTouchScreenListener;
+
+    public void setOnTouchScreenListener(OnTouchScreenListener onTouchScreenListener) {
+        this.onTouchScreenListener = onTouchScreenListener;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (onTouchScreenListener != null)
+                onTouchScreenListener.onTouchScreen();
+        }
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            if (onTouchScreenListener != null)
+                onTouchScreenListener.onReleaseScreen();
+        }
+        return super.onTouchEvent(event);
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     public RichEditor(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -103,6 +130,7 @@ public class RichEditor extends WebView {
 
         applyAttributes(context, attrs);
     }
+
 
     protected EditorWebViewClient createWebviewClient() {
         return new EditorWebViewClient();
@@ -121,6 +149,7 @@ public class RichEditor extends WebView {
     }
 
     private void callback(String text) {
+        Log.i("文本回调", text);
         mContents = text.replaceFirst(CALLBACK_SCHEME, "");
         if (mTextChangeListener != null) {
             mTextChangeListener.onTextChange(mContents);
@@ -166,7 +195,7 @@ public class RichEditor extends WebView {
 
 
     private void stateCheck(String text) {
-
+        Log.i("文本类容", text);
         if (!text.contains("@_@")) {
             String state = text.replaceFirst(STATE_SCHEME, "").toUpperCase(Locale.ENGLISH);
             List<Type> types = new ArrayList<>();
@@ -196,6 +225,11 @@ public class RichEditor extends WebView {
 
         if (text.replaceFirst(STATE_SCHEME, "").split("@_@").length > 1) {
             mContents = text.replaceFirst(STATE_SCHEME, "").split("@_@")[1];
+            if (mTextChangeListener != null) {
+                mTextChangeListener.onTextChange(mContents);
+            }
+        } else {
+            mContents = "";
             if (mTextChangeListener != null) {
                 mTextChangeListener.onTextChange(mContents);
             }
@@ -400,17 +434,15 @@ public class RichEditor extends WebView {
         exec("javascript:RE.removeFormat();");
     }
 
-    public void setHeading(int heading, boolean b, boolean isItalic, boolean isBold, boolean isStrikeThrough) {
+    public void setHeading(int heading, boolean isItalic, boolean isBold, boolean isStrikeThrough) {
         exec("javascript:RE.prepareInsert();");
-//        if (!b) {
-//            if (isItalic)
-//                exec("javascript:RE.setItalic();");
-//            if (isBold)
-//                exec("javascript:RE.setBold();");
-//            if (isStrikeThrough)
-//                exec("javascript:RE.setStrikeThrough();");
-//        }
-        exec("javascript:RE.setHeading('" + heading + "'," + b + ");");
+//        if (isItalic)
+//            exec("javascript:RE.setItalic();");
+//        if (isBold)
+//            exec("javascript:RE.setBold();");
+//        if (isStrikeThrough)
+//            exec("javascript:RE.setStrikeThrough();");
+        exec("javascript:RE.setHeading('" + heading + "'," + true + ");");
     }
 
     public void setIndent() {
@@ -435,14 +467,12 @@ public class RichEditor extends WebView {
 
     public void setBlockquote(boolean b, boolean isItalic, boolean isBold, boolean isStrikeThrough) {
         exec("javascript:RE.prepareInsert();");
-//        if (!b) {
-//            if (isItalic)
-//                exec("javascript:RE.setItalic();");
-//            if (isBold)
-//                exec("javascript:RE.setBold();");
-//            if (isStrikeThrough)
-//                exec("javascript:RE.setStrikeThrough();");
-//        }
+//        if (isItalic)
+//            exec("javascript:RE.setItalic();");
+//        if (isBold)
+//            exec("javascript:RE.setBold();");
+//        if (isStrikeThrough)
+//            exec("javascript:RE.setStrikeThrough();");
         exec("javascript:RE.setBlockquote(" + b + ");");
     }
 

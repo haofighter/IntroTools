@@ -1,30 +1,27 @@
 package com.intro.hao.mytools.home.activity
 
 import android.Manifest
-import android.annotation.TargetApi
-import android.os.Bundle
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.View
+import com.bumptech.glide.Glide
+import com.intro.hao.mytools.R
 import com.intro.hao.mytools.ResponseBean.BaseResponce
-import com.intro.hao.mytools.Utils.PromisionUtils
+import com.intro.hao.mytools.Utils.KeyboardChangeListener
 import com.intro.hao.mytools.Utils.ToastUtils
+import com.intro.hao.mytools.base.ToolBarBaseActivity
+import com.intro.hao.mytools.constant.AppConstant
 import com.intro.hao.mytools.net.RetrofitManager
 import com.intro.hao.mytools.net.Service
+import com.intro.project.clock.clockutils.SpecialBackCall
+import com.intro.project.clock.service.AlarmService
+import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.activity_main.*
 import rx.android.schedulers.AndroidSchedulers
 import rx.functions.Action1
 import rx.schedulers.Schedulers
-import android.content.Intent
-import android.os.Build
-import android.support.annotation.RequiresApi
-import com.bumptech.glide.Glide
-import com.intro.hao.mytools.R
-import com.intro.hao.mytools.base.BackCall
-import com.intro.hao.mytools.base.SpecialBackCall
-import com.intro.hao.mytools.base.ToolBarBaseActivity
-import com.intro.hao.mytools.constant.AppConstant
-import jp.wasabeef.glide.transformations.BlurTransformation
-import com.intro.hao.mytools.home.service.HorizonService
 
 
 class MainActivity : ToolBarBaseActivity(), View.OnClickListener {
@@ -34,8 +31,13 @@ class MainActivity : ToolBarBaseActivity(), View.OnClickListener {
 
     override fun initView() {
         navigation.setTitle(this.localClassName)
+        setKeyboardChangeListener(object : KeyboardChangeListener.KeyBoardListener {
+            override fun onKeyboardChange(isShow: Boolean, keyboardHeight: Int) {
+                Log.d("软键盘的监听", "isShow = [$isShow], keyboardHeight = [$keyboardHeight]")
+            }
+        })
 
-        if (PromisionUtils(this).ApplyPromise(this, Manifest.permission.INTERNET, 0)) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             RetrofitManager().builder(Service::class.java).getCarInfoObservable().subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
                     .subscribe(object : Action1<BaseResponce> {
                         override fun call(t: BaseResponce?) {
@@ -56,15 +58,15 @@ class MainActivity : ToolBarBaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.set_a_clock -> {
-                ToastUtils().showMessage("设置定时任务")
-                var intent = Intent(this, HorizonService::class.java)
-                intent.putExtra("backcall", object : SpecialBackCall() {
+                var intent = Intent(this, AlarmService::class.java)
+                intent.putExtra(AppConstant().BACK_CALL, object : SpecialBackCall(R.id.set_a_clock) {
                     override fun deal(vararg objects: Any) {
                         Log.i("tag", "定时任务回调启动了")
                         ToastUtils().showMessage("定时任务回调启动了·")
                     }
                 })
-                intent.putExtra(AppConstant().HORIZENSERVICE_TIME, System.currentTimeMillis() + 1000)
+                intent.putExtra(AppConstant().HORIZENSERVICE_TIME, System.currentTimeMillis())
+                intent.putExtra(AppConstant().ALAERN_TAG, R.id.set_a_clock)
                 startService(intent)
             }
         }

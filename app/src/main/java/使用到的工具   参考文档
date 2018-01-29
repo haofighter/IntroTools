@@ -1,0 +1,6 @@
+https://github.com/vicpinm/Kotlin-Realm-Extensions 项目示例
+
+kotlin  数据库支持   Realm
+
+需要集成插件  classpath "io.realm:realm-gradle-plugin:4.3.1"
+

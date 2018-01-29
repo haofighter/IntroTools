@@ -3,8 +3,11 @@ package com.intro.hao.mytools.Utils
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
+import android.os.Build
 import android.util.DisplayMetrics
-import android.view.WindowManager
+import android.util.Log
+import android.view.View
+import android.view.ViewTreeObserver
 
 
 /**
@@ -82,5 +85,17 @@ class SystemUtils {
         val outMetrics = DisplayMetrics()
         manager.getDefaultDisplay().getMetrics(outMetrics)
         return outMetrics;
+    }
+
+
+    fun getViewSize(v: View): View {
+        val w = View.MeasureSpec.makeMeasureSpec(0,
+                View.MeasureSpec.UNSPECIFIED)
+        val h = View.MeasureSpec.makeMeasureSpec(0,
+                View.MeasureSpec.UNSPECIFIED)
+        v.measure(w, h)
+        val height = v.getMeasuredHeight()
+        val width = v.getMeasuredWidth()
+        return v
     }
 }

@@ -13,28 +13,7 @@ abstract class BackCall : Serializable {
 
     abstract fun deal()
 
-    fun deal(tag: String) {
+    abstract fun deal(tag: Any, vararg obj: Any)
 
-    }
-
-    fun deal(tag: Int) {
-
-    }
-
-    fun deal(tag: String, vararg obj: Any) {
-
-    }
-
-    fun deal(tag: Int, vararg obj: Any) {
-
-    }
-
-    fun dealForResult(tag: String, vararg obj: Any): Boolean {
-        return true
-    }
-
-    fun dealForResult(tag: Int, vararg obj: Any): Boolean {
-        return true
-    }
 
 }

@@ -8,7 +8,7 @@
         android:id="@+id/navigationbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/green"></com.intro.hao.mytools.view.NavigationBar>
+        android:background="@color/white"></com.intro.hao.mytools.view.NavigationBar>
 
     <include layout="@layout/line_gray_view" />
 

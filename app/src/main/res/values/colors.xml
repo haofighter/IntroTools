@@ -15,5 +15,6 @@
     <color name="gray_44">#22808080</color>
     <color name="gray_66">#22808080</color>
     <color name="line_gray">#22808080</color>
+    <color name="black">#000000</color>
 
 </resources>

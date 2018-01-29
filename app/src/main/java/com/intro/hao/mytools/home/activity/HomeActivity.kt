@@ -1,7 +1,5 @@
 package com.intro.hao.mytools.home.activity
 
-import android.app.Activity
-import android.os.Bundle
 import com.intro.hao.mytools.R
 import com.intro.hao.mytools.base.ToolBarBaseActivity
 import com.intro.hao.mytools.view.NavigationBar
@@ -17,8 +15,8 @@ class HomeActivity : ToolBarBaseActivity() {
 
     override fun initView() {
         navigation.setLeftText("侧滑")
-        navigation.setListener(object : NavigationBar.NavigationListener {
-            override fun onButtonClick(button: NavigationTag) {
+        navigation.addListener(object : NavigationBar.NavigationListener {
+            override fun onButtonClick(button: NavigationTag): Boolean {
                 when (button) {
                     NavigationTag.LEFT_VIEW -> {
                         openSiding()
@@ -28,6 +26,7 @@ class HomeActivity : ToolBarBaseActivity() {
                     NavigationTag.RIGHT_VIEW -> {
                     }
                 }
+                return false
             }
         })
     }
