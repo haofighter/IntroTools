@@ -5,10 +5,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.view.KeyEvent
+import com.intro.hao.guide.PaperOnboardingFragment
+import com.intro.hao.guide.PaperOnboardingPage
 import com.intro.hao.mytools.Utils.SharePreferenceUtils
 import com.intro.hao.mytools.base.App
-import com.intro.project.guide.PaperOnboardingFragment
-import com.intro.project.guide.PaperOnboardingPage
 import com.intro.project.secret.MainActivity
 import com.intro.project.secret.R
 
