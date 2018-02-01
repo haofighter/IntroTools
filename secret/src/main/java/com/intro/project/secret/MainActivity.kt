@@ -11,7 +11,7 @@ import com.intro.hao.mytools.base.App
 import com.intro.project.secret.TestAcivity.TestActivity
 import com.intro.project.secret.base.BaseActiivty
 import com.intro.project.secret.moudle.WelcomeActivity
-import com.intro.project.secret.moudle.note.modle.NoteInfo
+import com.intro.project.secret.modle.note.NoteInfo
 import com.vicpin.krealmextensions.queryAll
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -79,6 +79,9 @@ class MainActivity : BaseActiivty(), View.OnClickListener {
         })
         return R.layout.activity_main
     }
+
+
+
 
 
     /**

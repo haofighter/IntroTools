@@ -1,9 +1,13 @@
 package com.intro.project.secret.moudle
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.FragmentActivity
+import android.util.Log
 import android.view.KeyEvent
 import com.intro.hao.guide.PaperOnboardingFragment
 import com.intro.hao.guide.PaperOnboardingPage
@@ -20,6 +24,7 @@ class WelcomeActivity : FragmentActivity() {
         var isUsed = SharePreferenceUtils.get().getDate("isFristuse")
         if (!if (isUsed != null) isUsed as Boolean else false) {
             startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
         setContentView(R.layout.activity_welcome)
         initGuide()
@@ -51,6 +56,7 @@ class WelcomeActivity : FragmentActivity() {
         onBoardingFragment.setOnRightOutListener {
             SharePreferenceUtils.get().setDate("isFristuse", true)
             startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
     }
 
@@ -67,5 +73,28 @@ class WelcomeActivity : FragmentActivity() {
         }
         return super.onKeyDown(keyCode, event)
     }
+
+
+    override fun onResume() {
+        super.onResume()
+
+        ActivityCompat.requestPermissions(this, arrayOf<String>(Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA, Manifest.permission.READ_CONTACTS, Manifest.permission.ACCESS_FINE_LOCATION), 100)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 100) {
+            Log.i("grantResults这里面是啥", "长度" + grantResults.size)
+            for (i in permissions.indices) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    Log.i("同意了", permissions[i] + "的权限申请")
+                } else {
+                    Log.i("拒绝了", permissions[i] + "的权限申请")
+                }
+            }
+        }
+    }
+
 
 }

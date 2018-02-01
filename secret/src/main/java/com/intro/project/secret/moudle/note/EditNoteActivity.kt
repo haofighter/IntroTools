@@ -28,7 +28,7 @@ import com.intro.hao.mytools.view.NavigationBar
 import com.intro.hao.mytools.view.NavigationTag
 import com.intro.project.secret.R
 import com.intro.project.secret.base.BaseActiivty
-import com.intro.project.secret.moudle.note.modle.NoteInfo
+import com.intro.project.secret.modle.note.NoteInfo
 import com.vicpin.krealmextensions.save
 import kotlinx.android.synthetic.main.activity_edit_note.*
 import kotlinx.android.synthetic.main.add_fun_set_layout.*
@@ -37,8 +37,8 @@ import java.util.*
 
 
 class EditNoteActivity : BaseActiivty(), View.OnClickListener, RichEditor.OnTouchScreenListener {
-
     override fun onReleaseScreen() {
+
     }
 
     override fun onTouchScreen() {
@@ -207,7 +207,8 @@ class EditNoteActivity : BaseActiivty(), View.OnClickListener, RichEditor.OnTouc
         richEditor.setOnTouchScreenListener(this)
         initRichEditSettingView()
         initRichEditSetting()
-        KeyboardChangeListener(this).setKeyBoardListener(object : KeyboardChangeListener.KeyBoardListener {
+
+        setKeyboardChangeListener(object : KeyboardChangeListener.KeyBoardListener {
             override fun onKeyboardChange(isShow: Boolean, keyboardHeight: Int) {
                 Log.d("软键盘的监听", "isShow = [$isShow], keyboardHeight = [$keyboardHeight]")
             }

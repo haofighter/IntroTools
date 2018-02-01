@@ -14,9 +14,14 @@
         android:id="@+id/siding_content_left_layout"
         android:layout_width="200dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@color/colorPrimary">
+        android:layout_gravity="start">
 
+        <ImageView
+            android:id="@+id/left_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="matrix"
+            android:src="@mipmap/main9" />
     </RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>

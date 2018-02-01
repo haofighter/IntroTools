@@ -71,4 +71,7 @@ open class App : Application() {
             activities[i].finish()
         }
     }
+
+    var nowActivity: Activity? = null
+
 }

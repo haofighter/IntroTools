@@ -1,6 +1,7 @@
 package com.intro.hao.mytools.base
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -11,7 +12,9 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.RelativeLayout
 import com.intro.hao.mytools.R
+import com.intro.hao.mytools.Utils.BitmapUtils
 import com.intro.hao.mytools.Utils.DialogUtils
 import com.intro.hao.mytools.Utils.KeyboardChangeListener
 import kotlinx.android.synthetic.main.activity_side_base.*
@@ -25,6 +28,7 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        App.instance.nowActivity = this
         App.instance.addActivty(this)
         super.setContentView(R.layout.activity_side_base)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -40,6 +44,18 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
         KeyboardChangeListener(this).setKeyBoardListener(keyBoardListener)
     }
 
+    fun setRightLayoutParamt(layoutParams: RelativeLayout.LayoutParams) {
+        siding_content_left_layout.layoutParams = layoutParams
+    }
+
+    fun setRightLayoutWidth(width: Int) {
+        siding_content_left_layout.layoutParams = RelativeLayout.LayoutParams(width, RelativeLayout.LayoutParams.MATCH_PARENT)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    fun setRightLayoutBackGround(drawable: Drawable) {
+        siding_content_left_layout.background = BitmapUtils().blurDrawable(drawable, 20f)
+    }
 
     override fun setContentView(layoutId: Int) {
         setContentView(LayoutInflater.from(this).inflate(layoutId, null))

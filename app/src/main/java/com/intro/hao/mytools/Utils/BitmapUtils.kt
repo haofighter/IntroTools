@@ -1,14 +1,13 @@
 package com.intro.hao.mytools.Utils
 
 import android.graphics.*
-import android.graphics.drawable.Drawable
-import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.renderscript.Allocation
 import android.renderscript.Element
-import android.renderscript.ScriptIntrinsicBlur
 import android.renderscript.RenderScript
+import android.renderscript.ScriptIntrinsicBlur
 import android.support.annotation.RequiresApi
 import com.intro.hao.mytools.base.App
 
@@ -44,6 +43,16 @@ class BitmapUtils {
         return bd.bitmap
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    fun blurDrawable(drawable: Drawable, radius: Float): Drawable {
+        return BitmapDrawable(blurBitmap(drawableToBitmap(drawable), radius))
+    }
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    fun blurDrawableForBitmap(drawable: Drawable, radius: Float): Bitmap {
+        return drawableToBitmap(BitmapDrawable(blurBitmap(drawableToBitmap(drawable), radius)))
+    }
 
     /**
      * 高斯模糊

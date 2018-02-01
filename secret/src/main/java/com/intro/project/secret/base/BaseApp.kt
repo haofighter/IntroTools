@@ -1,7 +1,7 @@
 package com.intro.project.secret.base
 
 import com.intro.hao.mytools.base.App
-import com.intro.project.secret.moudle.note.modle.NoteInfo
+import com.intro.project.secret.modle.note.NoteInfo
 import com.vicpin.krealmextensions.RealmConfigStore
 import io.realm.Realm
 import io.realm.RealmConfiguration
