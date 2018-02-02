@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.View
 import com.intro.hao.mytools.R
 import com.intro.hao.mytools.Utils.listener.SearchFileLisener
+import com.intro.hao.mytools.Utils.listener.TraverseFileListener
 import com.intro.hao.mytools.base.App
 import com.intro.hao.mytools.base.BackCall
 import java.io.File
@@ -113,18 +114,36 @@ class SystemUtils {
      * path 搜索文件的最初目录
      * filestag 搜索的文件的表示 可以是特定的表示  也可以是后缀
      */
-    tailrec fun traverseFile(path: String, filesTag: MutableList<String>, backCall: BackCall): MutableList<String> {
-        var searchFiles = mutableListOf<String>()
+    tailrec fun traverseFile(path: String, filesTag: MutableList<String>, traverseFileListener: TraverseFileListener): MutableList<Any?> {
+        var searchFiles = mutableListOf<Any?>()
         val dir = File(path)//文件夹dir
-        backCall.deal("file", path)
-        val files = dir.listFiles() ?: return mutableListOf<String>()//文件夹下的所有文件或文件夹
+        if (App.instance.nowActivity != null) {
+            App.instance.nowActivity!!.runOnUiThread(object : Runnable {
+                override fun run() {
+                    traverseFileListener.traverseDirectoryItem(path)
+                }
+            })
+        } else {
+            ToastUtils().showMessage("获取到的当前activity为空，调用此方法前，请先调用   App.instance.nowActivity=this(当前的activity)")
+        }
+
+        val files = dir.listFiles() ?: return mutableListOf<Any?>()//文件夹下的所有文件或文件夹
         for (i in files) {
             if (i.isDirectory()) {
-                searchFiles.addAll(traverseFile(i.getAbsolutePath(), filesTag, backCall))//递归文件夹！！！
+                searchFiles.addAll(traverseFile(i.absolutePath, filesTag, traverseFileListener))//递归文件夹！！！
             } else {
                 for (item in filesTag) {
-                    if (i.path.endsWith(item)) {
-                        searchFiles.add(i.absolutePath)
+                    if (i.absolutePath.endsWith(item)) {
+                        if (App.instance.nowActivity != null) {
+                            App.instance.nowActivity!!.runOnUiThread(object : Runnable {
+                                override fun run() {
+                                    searchFiles.add(traverseFileListener.traverseFileItem(i.absolutePath))
+                                }
+                            })
+
+                        } else {
+                            ToastUtils().showMessage("获取到的当前activity为空，调用此方法前，请先调用   App.instance.nowActivity=this(当前的activity)")
+                        }
                     }
                 }
             }
@@ -133,9 +152,9 @@ class SystemUtils {
     }
 
     var searchFileAsyncTask: SearchFileAsyncTask? = null
-    fun searchFlie(tags: MutableList<String>, searchFileLisener: SearchFileLisener) {
+    fun searchFlie(tags: MutableList<String>, searchFileLisener: SearchFileLisener, traverseFileListener: TraverseFileListener) {
         if (ActivityCompat.checkSelfPermission(App.instance, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            searchFileAsyncTask = SearchFileAsyncTask(searchFileLisener)
+            searchFileAsyncTask = SearchFileAsyncTask(searchFileLisener, traverseFileListener)
             searchFileAsyncTask!!.execute(tags)
         } else {
             DialogUtils.instance.showInfoDialog(App.instance, "提示", "您还未获取到相关的操作权限是,无法使用此功能/n是否进行申请", "申请", "取消", object : BackCall() {
@@ -149,7 +168,6 @@ class SystemUtils {
                                 ActivityCompat.requestPermissions(App.instance.nowActivity!!, arrayOf<String>(Manifest.permission.READ_EXTERNAL_STORAGE), 100)
                             } else {
                                 throw NullPointerException("未获取到 当前的activity ,  请尝试调用此方法之前调用 App.instance.nowActivity = this(Activity)")
-
                             }
                         }
 
@@ -167,24 +185,17 @@ class SystemUtils {
     }
 
 
-    class SearchFileAsyncTask constructor(searchFileLisener: SearchFileLisener) : AsyncTask<MutableList<String>, String, MutableList<String>>() {
+    /**
+     * 遍历查询文件的方法
+     */
+    class SearchFileAsyncTask constructor(searchFileLisener: SearchFileLisener, traverseFileListener: TraverseFileListener) : AsyncTask<MutableList<String>, String, MutableList<Any?>>() {
         var listener = searchFileLisener
-        override fun doInBackground(vararg p0: MutableList<String>): MutableList<String>? {
+        var traverselistener = traverseFileListener
+        override fun doInBackground(vararg p0: MutableList<String>): MutableList<Any?>? {
             if (isCancelled()) {//执行中断方法 cancalSearchFileAsyncTask后只是给task设置一个状态  并没有对task进行处理 需要在此位置进行处理
-                return mutableListOf<String>()
+                return mutableListOf<Any?>()
             }
-
-            return SystemUtils().traverseFile(Environment.getExternalStorageDirectory().path, p0[0], object : BackCall() {
-                override fun deal() {
-
-                }
-
-                override fun deal(tag: Any, vararg obj: Any) {
-                    when (tag) {
-                        "file" -> publishProgress(obj[0] as String)
-                    }
-                }
-            })
+            return SystemUtils().traverseFile(Environment.getExternalStorageDirectory().path, p0[0], traverselistener)
         }
 
         override fun onPreExecute() {
@@ -203,7 +214,7 @@ class SystemUtils {
             listener.updateProgress(*values)
         }
 
-        override fun onPostExecute(result: MutableList<String>?) {
+        override fun onPostExecute(result: MutableList<Any?>?) {
             super.onPostExecute(result)
             Log.i("进度", "总共搜索" + result!!.size)
             listener.finish(result)

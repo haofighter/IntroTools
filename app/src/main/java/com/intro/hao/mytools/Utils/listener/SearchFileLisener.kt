@@ -5,7 +5,7 @@ package com.intro.hao.mytools.Utils.listener
  */
 interface SearchFileLisener {
     fun updateProgress(vararg values: String?)
-    fun finish(result: MutableList<String>?)
+    fun finish(result: MutableList<Any?>?)
     fun onCancal()
     fun onStart()
 }

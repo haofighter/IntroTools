@@ -51,6 +51,9 @@ abstract class ToolBarBaseActivity : BaseActivity() {
                 window.statusBarColor = ContextCompat.getColor(this, R.color.gray_44)
         } else if (navBackGround is BitmapDrawable) {
             var bgBitmap = navBackGround.bitmap  //获取到了背景图片
+            window.statusBarColor = ContextCompat.getColor(this, R.color.gray_44)
+        } else {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.gray_44)
         }
 
         if (LayoutID() != 0) {

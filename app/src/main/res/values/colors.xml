@@ -12,8 +12,8 @@
     <color name="green">#22DD48</color>
     <color name="gray">#808080</color>
     <color name="gray_22">#22808080</color>
-    <color name="gray_44">#22808080</color>
-    <color name="gray_66">#22808080</color>
+    <color name="gray_44">#44808080</color>
+    <color name="gray_66">#66808080</color>
     <color name="line_gray">#22808080</color>
     <color name="black">#000000</color>
     <color name="black_semi_transparent">#B2000000</color>

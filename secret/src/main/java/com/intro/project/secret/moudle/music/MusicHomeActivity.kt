@@ -1,12 +1,21 @@
 package com.intro.project.secret.moudle.music
 
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import com.intro.hao.mytools.Utils.SystemUtils
-import com.intro.hao.mytools.Utils.listener.SearchFileLisener
+import com.intro.hao.Twink.RefreshListenerAdapter
+import com.intro.hao.Twink.TwinklingRefreshLayout
+import com.intro.hao.mytools.Utils.MusicUtils
+import com.intro.hao.mytools.Utils.listener.SearchMusicLisener
+import com.intro.hao.mytools.Utils.modle.MusicInfo
+import com.intro.hao.mytools.Utils.modle.VadioFileInfo
 import com.intro.hao.mytools.base.BackCall
+import com.intro.hao.mytools.customview.RecycleViewDivider
 import com.intro.project.secret.R
 import com.intro.project.secret.base.BaseActiivty
+import com.vicpin.krealmextensions.queryAll
+import com.vicpin.krealmextensions.saveAll
 import kotlinx.android.synthetic.main.activity_music_home.*
 
 class MusicHomeActivity : BaseActiivty() {
@@ -14,24 +23,60 @@ class MusicHomeActivity : BaseActiivty() {
         return R.layout.activity_music_home
     }
 
-    var musicSearch: MutableList<String>? = null
+    var musicSearch: MutableList<VadioFileInfo> = mutableListOf()
     var showTag = 0
+
+    fun initRefresh() {
+        refresh.setEnableRefresh(false)
+        refresh.setOverScrollTopShow(false)
+        refresh.setEnableOverScroll(false)//禁止界面回弹  可去掉刷新效果
+        refresh.setOnRefreshListener(object : RefreshListenerAdapter() {
+            override fun onLoadMore(refreshLayout: TwinklingRefreshLayout) {
+                super.onLoadMore(refreshLayout)
+                showTag++
+                setShowMusic()
+                refresh.finishLoadmore()
+            }
+
+            override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
+                super.onRefresh(refreshLayout)
+                showTag = 0
+                setShowMusic()
+                refresh.finishRefreshing()
+            }
+        })
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        musicSearch = VadioFileInfo().queryAll().toMutableList()
+        setShowMusic()
+    }
+
 
     override fun initView() {
         super.initView()
+        initRefresh()
+        setBaseBackGround(R.mipmap.main1)
         navigation.setTitle("我的music")
         //设置布局管理器
         mi_music.setLayoutManager(LinearLayoutManager(this))
         //设置增加或删除条目的动画
         mi_music.setItemAnimator(DefaultItemAnimator())
+        //设置分界线
+        mi_music.addItemDecoration(RecycleViewDivider(this, DividerItemDecoration.HORIZONTAL, 1, ContextCompat.getColor(this, R.color.gray_22)))
         mi_music.adapter = MiMusicAdapter(this, backCall)
+        mi_music.adapter.notifyDataSetChanged()
+    }
 
-        SystemUtils().searchFlie(mutableListOf<String>(".mp3", ".wma", ".wav", ".asf", ".aac", ".mp3pro", "avi"), object : SearchFileLisener {
-            override fun updateProgress(vararg values: String?) {
-            }
 
-            override fun finish(result: MutableList<String>?) {
-                musicSearch = result
+    fun searchMusic() {
+        MusicUtils().searchFlie(object : SearchMusicLisener {
+            override fun finish(result: MutableList<MusicInfo>?) {
+                musicSearch = result as MutableList<VadioFileInfo>
+                musicSearch.saveAll()
+                setShowMusic()
             }
 
             override fun onCancal() {
@@ -39,11 +84,27 @@ class MusicHomeActivity : BaseActiivty() {
 
             override fun onStart() {
             }
+
+            override fun updateProgress(vararg values: String?) {
+                runOnUiThread(object : Runnable {
+                    override fun run() {
+                        if (values != null && values.size > 0 && values[0] != null) {
+                            (mi_music.adapter as MiMusicAdapter).searchFileName = values[0]
+                            mi_music.adapter.notifyDataSetChanged()
+                        }
+                    }
+                })
+            }
         })
     }
 
     fun setShowMusic() {
-        (mi_music.adapter as MiMusicAdapter).addDate(musicSearch!!.subList(0, (showTag + 1) * 10))
+        (mi_music.adapter as MiMusicAdapter).setDate(musicSearch!!.subList(0, if ((showTag + 1) * 10 > musicSearch.size) musicSearch.size else (showTag + 1) * 10))
+
+        //如果列表不为空 开启刷新设置
+        if ((mi_music.adapter as MiMusicAdapter).getDate()!!.size > 0) {
+            refresh.setEnableRefresh(true)
+        }
     }
 
 
@@ -52,6 +113,10 @@ class MusicHomeActivity : BaseActiivty() {
         }
 
         override fun deal(tag: Any, vararg obj: Any) {
+            when (tag) {
+                R.id.music_empty_to_search -> searchMusic()
+            }
+
         }
     }
 

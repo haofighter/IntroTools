@@ -1,6 +1,7 @@
 package com.intro.hao.mytools.base
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -34,6 +35,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     }
 
+
     fun setKeyboardChangeListener(keyBoardListener: KeyboardChangeListener.KeyBoardListener) {
         KeyboardChangeListener(this).setKeyBoardListener(keyBoardListener)
     }
@@ -43,6 +45,15 @@ abstract class BaseActivity : AppCompatActivity() {
     fun setSlidingWidth(size: Int) {
         flowingDrawer_base.setMenuSize(size)
     }
+
+    fun setBaseBackGround(id: Int) {
+        base.setBackgroundResource(id)
+    }
+
+    fun setBaseBackGround(drawable: Drawable) {
+        base.background = drawable
+    }
+
 
     override fun setContentView(layoutId: Int) {
         setContentView(LayoutInflater.from(this).inflate(layoutId, null))

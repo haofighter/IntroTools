@@ -47,10 +47,15 @@ abstract class BaseToolBarActivity : BaseDrawerActivity() {
          */
         var navBackGround = navigationbar.background
         if (navBackGround is ColorDrawable) {
-            if (navBackGround.color == -1)
+            if (navBackGround.color == -1) {
                 window.statusBarColor = ContextCompat.getColor(this, R.color.gray_44)
+//                window.setStatusBarColor(this.getResources().getColor(R.color.black));
+            }
         } else if (navBackGround is BitmapDrawable) {
             var bgBitmap = navBackGround.bitmap  //获取到了背景图片
+            window.statusBarColor = ContextCompat.getColor(this, R.color.gray_44)
+        } else {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.gray_44)
         }
 
         if (LayoutID() != 0) {

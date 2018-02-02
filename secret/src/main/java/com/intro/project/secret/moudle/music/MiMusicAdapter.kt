@@ -3,10 +3,12 @@ package com.intro.project.secret.moudle.music
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.Adapter
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.intro.hao.mytools.Utils.modle.VadioFileInfo
 import com.intro.hao.mytools.base.BackCall
 import com.intro.project.secret.R
 
@@ -16,11 +18,19 @@ import com.intro.project.secret.R
 
 class MiMusicAdapter : Adapter<RecyclerView.ViewHolder> {
     override fun getItemCount(): Int {
-        return if (mutableList == null) 1 else mutableList.size
+        return if (mutableList == null || mutableList.size == 0) 1 else mutableList.size
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        (holder as MusicHolder).setDate(mutableList.get(position))
+        if (mutableList == null || mutableList.size == 0) {
+            (holder as EmptyMusicHolder).setDate((if (searchFileName == null) "" else searchFileName)!!)
+        } else {
+            (holder as MusicHolder).setDate(mutableList.get(position)).music_more.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(p0: View?) {
+                    backCall!!.deal(R.id.music_item_more, mutableList.get(position))
+                }
+            })
+        }
     }
 
 
@@ -34,10 +44,11 @@ class MiMusicAdapter : Adapter<RecyclerView.ViewHolder> {
 
 
     private var context: Context
+    var searchFileName: String? = ""
     private var backCall: BackCall?
 
-    var mutableList: MutableList<String> = mutableListOf()
-    fun setDate(mutableList: MutableList<String>?) {
+    var mutableList: MutableList<VadioFileInfo> = mutableListOf()
+    fun setDate(mutableList: MutableList<VadioFileInfo>?) {
         if (mutableList == null) {
             this.mutableList = mutableListOf()
         } else {
@@ -46,12 +57,18 @@ class MiMusicAdapter : Adapter<RecyclerView.ViewHolder> {
         notifyDataSetChanged()
     }
 
-    fun addDate(mutableList: MutableList<String>?) {
+    fun addDate(mutableList: MutableList<VadioFileInfo>?) {
         if (mutableList == null) {
         } else {
             this.mutableList.addAll(mutableList)
         }
         notifyDataSetChanged()
+    }
+
+    fun getDate(): MutableList<VadioFileInfo>? {
+        if (mutableList == null)
+            return mutableListOf<VadioFileInfo>()
+        return mutableList
     }
 
 
@@ -75,19 +92,42 @@ class MiMusicAdapter : Adapter<RecyclerView.ViewHolder> {
     class EmptyMusicHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
         var view = itemView;
         fun init(backCall: BackCall?): EmptyMusicHolder {
-            view!!.findViewById<TextView>(R.id.click_searchSong).setOnClickListener(object : View.OnClickListener {
+            view!!.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(p0: View?) {
                     if (backCall != null)
-                        backCall!!.deal("empty", "")
+                        backCall!!.deal(R.id.music_empty_to_search, "")
                 }
             })
             return this
         }
 
+        fun setDate(str: String) {
+            view!!.findViewById<TextView>(R.id.search_file).setText(str)
+        }
+
     }
 
     class MusicHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-        fun setDate(string: String) {
+
+        var music_more: View = itemView!!.findViewById<View>(R.id.music_item_more)
+
+        fun setDate(vadioFileInfo: VadioFileInfo): MusicHolder {
+            itemView.findViewById<TextView>(R.id.music_author).text = (vadioFileInfo.artist) + "-" + vadioFileInfo.album
+            itemView.findViewById<TextView>(R.id.music_name).text = vadioFileInfo.tilte
+
+            Log.i("图片位置", vadioFileInfo.url!!)
+//            Picasso.with(App.instance).load(vadioFileInfo.url!!).error(R.mipmap.icon1).into(itemView.findViewById<ImageView>(R.id.music_img))
+//            MusicUtils().getMusicImg(vadioFileInfo.url!!, object : BackCall() {
+//                override fun deal() {
+//                }
+//
+//                override fun deal(tag: Any, vararg obj: Any) {
+//                    when (tag) {
+//                        "image" -> itemView.findViewById<ImageView>(R.id.music_img).setImageBitmap(obj[0] as Bitmap)
+//                    }
+//                }
+//            })
+            return this
         }
     }
 }

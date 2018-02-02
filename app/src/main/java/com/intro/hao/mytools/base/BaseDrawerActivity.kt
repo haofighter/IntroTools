@@ -36,6 +36,14 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)  //设置禁止拖拽
     }
 
+    fun setBaseBackGround(id: Int) {
+        drawerLayout.setBackgroundResource(id)
+    }
+
+    fun setBaseBackGround(drawable: Drawable) {
+        drawerLayout.background = drawable
+    }
+
     fun setDrawaerCanDrag() {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)  //设置可以拖拽
     }

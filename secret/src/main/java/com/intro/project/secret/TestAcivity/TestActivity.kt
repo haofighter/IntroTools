@@ -4,8 +4,10 @@ import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.content.ContextCompat
 import android.util.Log
+import com.intro.hao.mytools.Utils.MusicUtils
 import com.intro.hao.mytools.Utils.SystemUtils
 import com.intro.hao.mytools.Utils.listener.SearchFileLisener
+import com.intro.hao.mytools.Utils.listener.TraverseFileListener
 import com.intro.hao.mytools.base.BaseToolBarActivity
 import com.intro.hao.mytools.view.NavigationBar
 import com.intro.hao.mytools.view.NavigationTag
@@ -36,7 +38,7 @@ class TestActivity : BaseToolBarActivity() {
                 Log.i("更新", values[0])
             }
 
-            override fun finish(result: MutableList<String>?) {
+            override fun finish(result: MutableList<Any?>?) {
                 Log.i("进度", "总共搜索" + result!!.size)
             }
 
@@ -46,6 +48,13 @@ class TestActivity : BaseToolBarActivity() {
 
             override fun onStart() {
                 Log.i("开始", "开始搜索")
+            }
+        }, object : TraverseFileListener {
+            override fun traverseFileItem(file: String): Any? {
+                return MusicUtils().getMusicInfoFromPath(file)
+            }
+
+            override fun traverseDirectoryItem(directroy: String) {
             }
         })
     }
