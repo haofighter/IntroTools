@@ -18,11 +18,11 @@ import com.intro.project.secret.R
 
 class MiMusicAdapter : Adapter<RecyclerView.ViewHolder> {
     override fun getItemCount(): Int {
-        return if (mutableList == null || mutableList.size == 0) 1 else mutableList.size
+        return if (mutableList.size == 0) 1 else mutableList.size
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        if (mutableList == null || mutableList.size == 0) {
+        if (mutableList.size == 0) {
             (holder as EmptyMusicHolder).setDate((if (searchFileName == null) "" else searchFileName)!!)
         } else {
             (holder as MusicHolder).setDate(mutableList.get(position)).music_more.setOnClickListener(object : View.OnClickListener {
@@ -66,11 +66,8 @@ class MiMusicAdapter : Adapter<RecyclerView.ViewHolder> {
     }
 
     fun getDate(): MutableList<VadioFileInfo>? {
-        if (mutableList == null)
-            return mutableListOf<VadioFileInfo>()
         return mutableList
     }
-
 
 
     constructor(context: Context, backCall: BackCall) {
@@ -95,7 +92,7 @@ class MiMusicAdapter : Adapter<RecyclerView.ViewHolder> {
             view!!.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(p0: View?) {
                     if (backCall != null)
-                        backCall!!.deal(R.id.music_empty_to_search, "")
+                        backCall.deal(R.id.music_empty_to_search, "")
                 }
             })
             return this

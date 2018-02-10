@@ -11,7 +11,7 @@ import com.intro.hao.mytools.R
 import com.intro.hao.mytools.ResponseBean.BaseResponce
 import com.intro.hao.mytools.Utils.KeyboardChangeListener
 import com.intro.hao.mytools.Utils.ToastUtils
-import com.intro.hao.mytools.base.ToolBarBaseActivity
+import com.intro.hao.mytools.base.ToolBarBaseFlowingActivity
 import com.intro.hao.mytools.constant.AppConstant
 import com.intro.hao.mytools.net.RetrofitManager
 import com.intro.hao.mytools.net.Service
@@ -24,13 +24,12 @@ import rx.functions.Action1
 import rx.schedulers.Schedulers
 
 
-class MainActivity : ToolBarBaseActivity(), View.OnClickListener {
+class MainFlowingActivity : ToolBarBaseFlowingActivity(), View.OnClickListener {
     override fun LayoutID(): Int {
         return R.layout.activity_main
     }
 
     override fun initView() {
-        navigation.setTitle(this.localClassName)
         setKeyboardChangeListener(object : KeyboardChangeListener.KeyBoardListener {
             override fun onKeyboardChange(isShow: Boolean, keyboardHeight: Int) {
                 Log.d("软键盘的监听", "isShow = [$isShow], keyboardHeight = [$keyboardHeight]")

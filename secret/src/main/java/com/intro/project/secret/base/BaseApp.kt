@@ -1,7 +1,6 @@
 package com.intro.project.secret.base
 
 import com.intro.hao.mytools.base.App
-import com.intro.project.secret.modle.note.NoteInfo
 import com.vicpin.krealmextensions.RealmConfigStore
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -36,7 +35,7 @@ class BaseApp : App() {
         //Optional: if you want to specify your own realm configuration, you have two ways:
 
         //1. If you want to specify a configuration for a specific module, you can use:
-        RealmConfigStore.initModule(NoteInfo::class.java, userAddressConfig)
+//        RealmConfigStore.initModule(NoteInfo::class.java, userAddressConfig)
         //2. You can specify any configuration per model with:
         //RealmConfigStore.init(User::class.java, userAddressConfig)
         //RealmConfigStore.init(Address::class.java, userAddressConfig)

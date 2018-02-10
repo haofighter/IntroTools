@@ -11,7 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.intro.hao.mytools.R
 import com.intro.hao.mytools.Utils.SystemUtils
-import com.intro.hao.mytools.view.NavigationBar
+import com.intro.hao.mytools.customview.NavigationBar
+import kotlinx.android.synthetic.main.activity_side_base.*
 import kotlinx.android.synthetic.main.toolbar_base_activity.*
 
 
@@ -21,7 +22,6 @@ import kotlinx.android.synthetic.main.toolbar_base_activity.*
 abstract class BaseToolBarActivity : BaseDrawerActivity() {
 
 
-    lateinit var navigation: NavigationBar
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,18 +34,18 @@ abstract class BaseToolBarActivity : BaseDrawerActivity() {
 
     abstract fun LayoutID(): Int
 
-
+    lateinit var navigation: NavigationBar
     /**
      * 初始化界面
      */
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun initToolBar() {
-        navigationbar.setPadding(0, SystemUtils().getDecorViewHightByReflect(this), 0, 0)
-        navigation = navigationbar
+        base_content.setPadding(0, SystemUtils().getDecorViewHightByReflect(this), 0, 0)
+        navigation = navigation_bar
         /**
          * 用于判断状态栏颜色 便于识别
          */
-        var navBackGround = navigationbar.background
+        var navBackGround = drawerLayout.background
         if (navBackGround is ColorDrawable) {
             if (navBackGround.color == -1) {
                 window.statusBarColor = ContextCompat.getColor(this, R.color.gray_44)

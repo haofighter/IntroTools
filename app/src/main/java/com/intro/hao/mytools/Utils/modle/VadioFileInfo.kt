@@ -5,7 +5,7 @@ import io.realm.RealmObject
 /**
  * Created by haozhang on 2018/2/1.
  */
-open class VadioFileInfo : RealmObject() {
+open class VadioFileInfo {
     open var url: String? = null
     open var year: String? = null       //出版日期
     open var album: String? = null   //专辑名

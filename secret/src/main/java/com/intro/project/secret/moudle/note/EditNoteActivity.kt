@@ -20,23 +20,20 @@ import android.view.View
 import android.widget.TextView
 import com.intro.hao.mytools.Utils.DialogUtils
 import com.intro.hao.mytools.Utils.KeyboardChangeListener
-import com.intro.hao.mytools.Utils.SomeElseUtils
 import com.intro.hao.mytools.Utils.ToastUtils
 import com.intro.hao.mytools.base.BackCall
+import com.intro.hao.mytools.customview.NavigationBar
+import com.intro.hao.mytools.customview.NavigationTag
 import com.intro.hao.mytools.customview.richeditor.RichEditor
-import com.intro.hao.mytools.view.NavigationBar
-import com.intro.hao.mytools.view.NavigationTag
 import com.intro.project.secret.R
-import com.intro.project.secret.base.BaseActiivty
-import com.intro.project.secret.modle.note.NoteInfo
-import com.vicpin.krealmextensions.save
+import com.intro.project.secret.base.DrawarBaseActiivty
 import kotlinx.android.synthetic.main.activity_edit_note.*
 import kotlinx.android.synthetic.main.add_fun_set_layout.*
 import kotlinx.android.synthetic.main.font_set_layout.*
 import java.util.*
 
 
-class EditNoteActivity : BaseActiivty(), View.OnClickListener, RichEditor.OnTouchScreenListener {
+class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.OnTouchScreenListener {
     override fun onReleaseScreen() {
 
     }
@@ -229,7 +226,6 @@ class EditNoteActivity : BaseActiivty(), View.OnClickListener, RichEditor.OnTouc
                 }
             })
         } else {
-            NoteInfo(SomeElseUtils().getRadomChar(4), System.currentTimeMillis(), richEditor.html).save()
             finish()
         }
     }
@@ -302,7 +298,6 @@ class EditNoteActivity : BaseActiivty(), View.OnClickListener, RichEditor.OnTouc
                 override fun deal(tag: Any, vararg obj: Any) {
                     when (tag) {
                         R.id.confirm -> {
-                            NoteInfo(SomeElseUtils().getRadomChar(4), System.currentTimeMillis(), richEditor.html).save()
                             finish()
                         }
                     }

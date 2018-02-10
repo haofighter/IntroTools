@@ -10,7 +10,7 @@ import android.widget.RelativeLayout
 import com.intro.hao.mytools.Utils.SystemUtils
 import com.intro.project.secret.R
 import com.intro.project.secret.TestAcivity.TestActivity
-import com.intro.project.secret.moudle.music.MusicHomeActivity
+import com.intro.project.secret.moudle.music.MusicHomeFlowingBaseActivity
 import com.intro.project.secret.moudle.note.EditNoteActivity
 import kotlinx.android.synthetic.main.flowing_layout.view.*
 
@@ -23,7 +23,7 @@ class SideLayout : RelativeLayout, View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.note -> mContext!!.startActivity(Intent(context, EditNoteActivity::class.java))
-            R.id.music -> mContext!!.startActivity(Intent(context, MusicHomeActivity::class.java))
+            R.id.music -> mContext!!.startActivity(Intent(context, MusicHomeFlowingBaseActivity::class.java))
             R.id.test -> mContext!!.startActivity(Intent(context, TestActivity::class.java))
         }
     }

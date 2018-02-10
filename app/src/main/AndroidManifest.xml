@@ -24,7 +24,7 @@
         <!--android:name="APK_SHOW"-->
         <!--android:value="${APK_SHOW_VALUE}" />-->
 
-        <activity android:name=".home.activity.MainActivity">
+        <activity android:name=".home.activity.MainFlowingActivity">
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.MAIN" />-->
 
@@ -32,7 +32,7 @@
             <!--</intent-filter>-->
         </activity>
 
-        <activity android:name=".home.activity.HomeActivity" />
+        <activity android:name=".home.activity.HomeFlowingActivity" />
 
     </application>
 

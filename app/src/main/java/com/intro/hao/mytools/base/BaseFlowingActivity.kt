@@ -16,25 +16,32 @@ import com.intro.hao.mytools.Utils.DialogUtils
 import com.intro.hao.mytools.Utils.KeyboardChangeListener
 import com.intro.hao.mytools.Utils.SystemUtils
 import com.intro.hao.mytools.customview.FlowingDraw.ElasticDrawer
-import kotlinx.android.synthetic.main.activity_base.*
+import kotlinx.android.synthetic.main.activity_base_base.*
 import kotlinx.android.synthetic.main.flowing_content_layout.*
 
 
 /**
  * 基础Activity
  */
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseFlowingActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.instance.addActivty(this)
-        super.setContentView(R.layout.activity_base)
+        super.setContentView(R.layout.activity_base_base)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         window.statusBarColor = ContextCompat.getColor(this, R.color.traslant)
 
     }
 
+    fun setBackGroundDrowableResuoce(id: Int) {
+        base.background = ContextCompat.getDrawable(this, id)
+    }
+
+    fun setBackGroundColorResuoce(id: Int) {
+        base.setBackgroundColor(ContextCompat.getColor(this, id))
+    }
 
     fun setKeyboardChangeListener(keyBoardListener: KeyboardChangeListener.KeyBoardListener) {
         KeyboardChangeListener(this).setKeyBoardListener(keyBoardListener)

@@ -11,15 +11,15 @@ import android.view.View
 import android.view.ViewGroup
 import com.intro.hao.mytools.R
 import com.intro.hao.mytools.Utils.SystemUtils
-import com.intro.hao.mytools.view.NavigationBar
+import com.intro.hao.mytools.customview.NavigationBar
+import kotlinx.android.synthetic.main.activity_base_base.*
 import kotlinx.android.synthetic.main.toolbar_base_activity.*
 
 
 /**
  * Created by haozhang on 2018/1/9.
  */
-abstract class ToolBarBaseActivity : BaseActivity() {
-
+abstract class ToolBarBaseFlowingActivity : BaseFlowingActivity() {
 
     lateinit var navigation: NavigationBar
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -40,17 +40,17 @@ abstract class ToolBarBaseActivity : BaseActivity() {
      */
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun initToolBar() {
-        navigationbar.setPadding(0, SystemUtils().getDecorViewHightByReflect(this), 0, 0)
-        navigation = navigationbar
+        navigation = navigation_bar
+        base_content.setPadding(0, SystemUtils().getDecorViewHightByReflect(this), 0, 0)
         /**
          * 用于判断状态栏颜色 便于识别
          */
-        var navBackGround = navigationbar.background
-        if (navBackGround is ColorDrawable) {
-            if (navBackGround.color == -1)
+        var baseBackGround = base.background
+        if (baseBackGround is ColorDrawable) {
+            if (baseBackGround.color == -1)
                 window.statusBarColor = ContextCompat.getColor(this, R.color.gray_44)
-        } else if (navBackGround is BitmapDrawable) {
-            var bgBitmap = navBackGround.bitmap  //获取到了背景图片
+        } else if (baseBackGround is BitmapDrawable) {
+            var bgBitmap = baseBackGround.bitmap  //获取到了背景图片
             window.statusBarColor = ContextCompat.getColor(this, R.color.gray_44)
         } else {
             window.statusBarColor = ContextCompat.getColor(this, R.color.gray_44)

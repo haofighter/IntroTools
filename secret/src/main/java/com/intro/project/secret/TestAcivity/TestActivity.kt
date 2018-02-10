@@ -9,8 +9,8 @@ import com.intro.hao.mytools.Utils.SystemUtils
 import com.intro.hao.mytools.Utils.listener.SearchFileLisener
 import com.intro.hao.mytools.Utils.listener.TraverseFileListener
 import com.intro.hao.mytools.base.BaseToolBarActivity
-import com.intro.hao.mytools.view.NavigationBar
-import com.intro.hao.mytools.view.NavigationTag
+import com.intro.hao.mytools.customview.NavigationBar
+import com.intro.hao.mytools.customview.NavigationTag
 import com.intro.project.secret.R
 import com.intro.project.secret.moudle.view.SideLayout
 

@@ -13,7 +13,7 @@ import com.intro.hao.guide.PaperOnboardingFragment
 import com.intro.hao.guide.PaperOnboardingPage
 import com.intro.hao.mytools.Utils.SharePreferenceUtils
 import com.intro.hao.mytools.base.App
-import com.intro.project.secret.MainActivity
+import com.intro.project.secret.MainFlowingBaseActivity
 import com.intro.project.secret.R
 
 
@@ -23,7 +23,7 @@ class WelcomeActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         var isUsed = SharePreferenceUtils.get().getDate("isFristuse")
         if (!if (isUsed != null) isUsed as Boolean else false) {
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, MainFlowingBaseActivity::class.java))
             finish()
         }
         setContentView(R.layout.activity_welcome)
@@ -55,7 +55,7 @@ class WelcomeActivity : FragmentActivity() {
         fragmentTransaction.commit()
         onBoardingFragment.setOnRightOutListener {
             SharePreferenceUtils.get().setDate("isFristuse", true)
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, MainFlowingBaseActivity::class.java))
             finish()
         }
     }

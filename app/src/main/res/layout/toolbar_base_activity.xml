@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.intro.hao.mytools.view.NavigationBar
-        android:id="@+id/navigationbar"
+    <com.intro.hao.mytools.customview.NavigationBar
+        android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.intro.hao.mytools.view.NavigationBar>
-
-    <include layout="@layout/line_gray_view" />
+        android:layout_height="55dp"></com.intro.hao.mytools.customview.NavigationBar>
 
     <RelativeLayout
         android:id="@+id/tool_base_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></RelativeLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical"></RelativeLayout>
 </LinearLayout>

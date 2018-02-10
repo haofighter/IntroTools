@@ -1,15 +1,15 @@
 package com.intro.project.secret.base
 
-import com.intro.hao.mytools.base.ToolBarBaseActivity
-import com.intro.hao.mytools.view.NavigationBar
-import com.intro.hao.mytools.view.NavigationTag
+import com.intro.hao.mytools.base.ToolBarBaseFlowingActivity
+import com.intro.hao.mytools.customview.NavigationBar
+import com.intro.hao.mytools.customview.NavigationTag
 import com.intro.project.secret.moudle.view.SideLayout
 
 
 /**
  * Created by haozhang on 2018/1/23.
  */
-abstract class BaseActiivty : ToolBarBaseActivity() {
+abstract class FlowingBaseActiivty : ToolBarBaseFlowingActivity() {
     override fun initView() {
         BaseApp.instance.nowActivity = this
         //初始化realm   并给定一个默认设置

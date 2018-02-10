@@ -30,5 +30,5 @@
             <include layout="@layout/flowing_content_layout" />
         </com.intro.hao.mytools.customview.FlowingDraw.FlowingMenuLayout>
 
-</com.intro.hao.mytools.customview.FlowingDraw.FlowingDrawer>
+    </com.intro.hao.mytools.customview.FlowingDraw.FlowingDrawer>
 </RelativeLayout>
