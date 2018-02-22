@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'realm-android'
 apply plugin: 'com.github.dcendents.android-maven'
-group='com.github.haofighter'
+group = 'com.github.haofighter'
 apply plugin: 'realm-android'
 
 
@@ -12,10 +12,14 @@ android {
     compileSdkVersion 26
     defaultConfig {
 //        applicationId "com.intro.hao.mytools"   //转为APP 需要
-        minSdkVersion 16
+        minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
         versionName "2.0"
+
+        // 使用support.v8.renderscript  高斯模糊 兼容版本  兼容至2.3版本
+        renderscriptTargetApi 18
+        renderscriptSupportModeEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -84,6 +88,7 @@ dependencies {
     compile 'com.github.vicpinm:krealmextensions:2.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.nineoldandroids:library:2.4.0'
+    compile 'joda-time:joda-time:2.9.9'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }

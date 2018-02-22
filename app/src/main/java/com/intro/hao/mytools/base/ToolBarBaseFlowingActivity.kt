@@ -45,20 +45,23 @@ abstract class ToolBarBaseFlowingActivity : BaseFlowingActivity() {
         /**
          * 用于判断状态栏颜色 便于识别
          */
-        var baseBackGround = base.background
-        if (baseBackGround is ColorDrawable) {
-            if (baseBackGround.color == -1)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            var baseBackGround = base.background
+            if (baseBackGround is ColorDrawable) {
+                if (baseBackGround.color == -1)
+                    window.statusBarColor = ContextCompat.getColor(this, R.color.gray_44)
+            } else if (baseBackGround is BitmapDrawable) {
+                var bgBitmap = baseBackGround.bitmap  //获取到了背景图片
                 window.statusBarColor = ContextCompat.getColor(this, R.color.gray_44)
-        } else if (baseBackGround is BitmapDrawable) {
-            var bgBitmap = baseBackGround.bitmap  //获取到了背景图片
-            window.statusBarColor = ContextCompat.getColor(this, R.color.gray_44)
-        } else {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.gray_44)
+            } else {
+                window.statusBarColor = ContextCompat.getColor(this, R.color.gray_44)
+            }
         }
 
         if (LayoutID() != 0) {
             setToolsBaseContentView(LayoutID())
         }
+
     }
 
     /**

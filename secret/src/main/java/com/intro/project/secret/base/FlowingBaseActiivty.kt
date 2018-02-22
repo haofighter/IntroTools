@@ -1,5 +1,6 @@
 package com.intro.project.secret.base
 
+import com.intro.hao.mytools.base.BackCall
 import com.intro.hao.mytools.base.ToolBarBaseFlowingActivity
 import com.intro.hao.mytools.customview.NavigationBar
 import com.intro.hao.mytools.customview.NavigationTag
@@ -13,7 +14,14 @@ abstract class FlowingBaseActiivty : ToolBarBaseFlowingActivity() {
     override fun initView() {
         BaseApp.instance.nowActivity = this
         //初始化realm   并给定一个默认设置
-        setFlowingDrawerContentView(SideLayout(this))
+        setFlowingDrawerContentView(SideLayout(this).setOnClickBackCall(object : BackCall() {
+            override fun deal() {
+                closeSiding()
+            }
+
+            override fun deal(tag: Any, vararg obj: Any) {
+            }
+        }))
         navigation.setTitle("首页")
         navigation.addListener(object : NavigationBar.NavigationListener {
             override fun onButtonClick(button: NavigationTag): Boolean {

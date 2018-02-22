@@ -8,10 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
 import com.intro.hao.mytools.Utils.SystemUtils
+import com.intro.hao.mytools.base.BackCall
 import com.intro.project.secret.R
 import com.intro.project.secret.TestAcivity.TestActivity
-import com.intro.project.secret.moudle.music.MusicHomeFlowingBaseActivity
+import com.intro.project.secret.moudle.music.MusicHomeFActivity
 import com.intro.project.secret.moudle.note.EditNoteActivity
+import com.intro.project.secret.moudle.schedule.ScheduleActivity
 import kotlinx.android.synthetic.main.flowing_layout.view.*
 
 /**
@@ -22,10 +24,24 @@ class SideLayout : RelativeLayout, View.OnClickListener {
     var mContext: Context?
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.note -> mContext!!.startActivity(Intent(context, EditNoteActivity::class.java))
-            R.id.music -> mContext!!.startActivity(Intent(context, MusicHomeFlowingBaseActivity::class.java))
-            R.id.test -> mContext!!.startActivity(Intent(context, TestActivity::class.java))
+            R.id.note -> {
+                mContext!!.startActivity(Intent(context, EditNoteActivity::class.java))
+                backCall!!.deal(R.id.note, "")
+            }
+            R.id.music -> {
+                mContext!!.startActivity(Intent(context, MusicHomeFActivity::class.java))
+                backCall!!.deal(R.id.note, "")
+            }
+            R.id.test -> {
+                mContext!!.startActivity(Intent(context, TestActivity::class.java))
+                backCall!!.deal(R.id.note, "")
+            }
+            R.id.plan -> {
+                mContext!!.startActivity(Intent(context, ScheduleActivity::class.java))
+                backCall!!.deal(R.id.note, "")
+            }
         }
+        backCall!!.deal()
     }
 
     constructor(context: Context?) : this(context, null)
@@ -44,6 +60,13 @@ class SideLayout : RelativeLayout, View.OnClickListener {
         note.setOnClickListener(this)
         music.setOnClickListener(this)
         test.setOnClickListener(this)
+        plan.setOnClickListener(this)
+    }
+
+    var backCall: BackCall? = null
+    fun setOnClickBackCall(backCall: BackCall): SideLayout {
+        this.backCall = backCall
+        return this
     }
 
 }

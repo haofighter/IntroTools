@@ -22,17 +22,20 @@ import kotlinx.android.synthetic.main.activity_side_base.*
 
 /**
  * 基础Activity  使用原生侧滑栏
+ * 用于需要对界面软键盘进行监听的需求
  */
 abstract class BaseDrawerActivity : AppCompatActivity() {
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.instance.nowActivity = this
         App.instance.addActivty(this)
         super.setContentView(R.layout.activity_side_base)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-        window.statusBarColor = ContextCompat.getColor(this, R.color.traslant)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.traslant)
+        }
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)  //设置禁止拖拽
     }
 
@@ -48,6 +51,8 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)  //设置可以拖拽
     }
 
+
+    //设置软件盘的监听
     fun setKeyboardChangeListener(keyBoardListener: KeyboardChangeListener.KeyBoardListener) {
         KeyboardChangeListener(this).setKeyBoardListener(keyBoardListener)
     }
@@ -84,6 +89,11 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
         siding_content_left_layout.removeAllViews()
         siding_content_left_layout.addView(layout)
     }
+
+    fun getDrawerContentView(): View {
+        return siding_content_left_layout
+    }
+
 
     fun setDrawerContentViewWidth(measuredWidth: Int) {
         Log.i("侧滑测长度", "     " + measuredWidth);

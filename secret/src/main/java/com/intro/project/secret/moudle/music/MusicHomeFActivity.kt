@@ -16,7 +16,7 @@ import com.intro.project.secret.R
 import com.intro.project.secret.base.FlowingBaseActiivty
 import kotlinx.android.synthetic.main.activity_music_home.*
 
-class MusicHomeFlowingBaseActivity : FlowingBaseActiivty() {
+class MusicHomeFActivity : FlowingBaseActiivty() {
 
 
     var musicSearch: MutableList<VadioFileInfo> = mutableListOf()
@@ -45,6 +45,7 @@ class MusicHomeFlowingBaseActivity : FlowingBaseActiivty() {
 
     fun initRefresh() {
         refresh.setEnableRefresh(false)
+        refresh.setEnableLoadmore(false)
         refresh.setOverScrollTopShow(false)
         refresh.setEnableOverScroll(false)//禁止界面回弹  可去掉刷新效果
         refresh.setOnRefreshListener(object : RefreshListenerAdapter() {
@@ -77,7 +78,8 @@ class MusicHomeFlowingBaseActivity : FlowingBaseActiivty() {
             override fun finish(result: MutableList<MusicInfo>?) {
                 musicSearch = result as MutableList<VadioFileInfo>
 //                musicSearch.saveAll()
-                setShowMusic()
+                if (musicSearch.size > 0)
+                    setShowMusic()
             }
 
             override fun onCancal() {
@@ -105,6 +107,7 @@ class MusicHomeFlowingBaseActivity : FlowingBaseActiivty() {
         //如果列表不为空 开启刷新设置
         if ((mi_music.adapter as MiMusicAdapter).getDate()!!.size > 0) {
             refresh.setEnableRefresh(true)
+            refresh.setEnableLoadmore(true)
         }
     }
 

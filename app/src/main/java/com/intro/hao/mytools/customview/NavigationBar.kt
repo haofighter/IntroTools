@@ -71,7 +71,7 @@ class NavigationBar : RelativeLayout {
         addListener.add(listener)
     }
 
-    fun clearListener(listener: NavigationListener) {
+    fun clearListener() {
         addListener.clear()
     }
 

@@ -1,14 +1,16 @@
 package com.intro.hao.mytools.Utils
 
+import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.renderscript.Allocation
-import android.renderscript.Element
-import android.renderscript.RenderScript
-import android.renderscript.ScriptIntrinsicBlur
 import android.support.annotation.RequiresApi
+import android.support.v8.renderscript.Allocation
+import android.support.v8.renderscript.Element
+import android.support.v8.renderscript.RenderScript
+import android.support.v8.renderscript.ScriptIntrinsicBlur
+import android.util.Log
 import com.intro.hao.mytools.base.App
 
 
@@ -44,12 +46,10 @@ class BitmapUtils {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     fun blurDrawable(drawable: Drawable, radius: Float): Drawable {
         return BitmapDrawable(blurBitmap(drawableToBitmap(drawable), radius))
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     fun blurDrawableForBitmap(drawable: Drawable, radius: Float): Bitmap {
         return drawableToBitmap(BitmapDrawable(blurBitmap(drawableToBitmap(drawable), radius)))
     }
@@ -58,8 +58,12 @@ class BitmapUtils {
      * 高斯模糊
      * radius 高斯模糊的数值 0-25之间  >=0图片将不会显示
      */
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    fun blurBitmap(bitmap: Bitmap, radius: Float): Bitmap {
+    fun blurBitmap(setBitmap: Bitmap, radius: Float): Bitmap {
+        //对图片进行缩小  提高处理速度
+        var width = Math.round(setBitmap.getWidth() * 0.2);
+        var height = Math.round(setBitmap.getHeight() * 0.2);
+        var bitmap = Bitmap.createScaledBitmap(setBitmap, width.toInt(), height.toInt(), false);
+
         //用需要创建高斯模糊bitmap创建一个空的bitmap
         val outBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
         // 初始化Renderscript，该类提供了RenderScript context，创建其他RS类之前必须先创建这个类，其控制RenderScript的初始化，资源管理及释放
@@ -149,7 +153,6 @@ class BitmapUtils {
 
         return output
     }
-
 
 
 }

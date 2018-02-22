@@ -41,7 +41,6 @@ import java.util.Locale;
 public class RichEditor extends WebView {
 
 
-
     public enum Type {
         BOLD,
         ITALIC,
@@ -211,14 +210,16 @@ public class RichEditor extends WebView {
             return;
         }
 
-        String state = text.replaceFirst(STATE_SCHEME, "").split("@_@")[0].toUpperCase(Locale.ENGLISH);
+        String[] states = text.replaceFirst(STATE_SCHEME, "").split("@_@");
+        String state = "";
+        if (states.length > 0)
+            state = states[0];
         List<Type> types = new ArrayList<>();
         for (Type type : Type.values()) {
             if (TextUtils.indexOf(state, type.name()) != -1) {
                 types.add(type);
             }
         }
-
         if (mDecorationStateListener != null) {
             mDecorationStateListener.onStateChangeListener(state, types);
         }
@@ -484,19 +485,19 @@ public class RichEditor extends WebView {
         exec("javascript:RE.setNumbers();");
     }
 
-    public void insertImage(String url, String alt,String title) {
+    public void insertImage(String url, String alt, String title) {
         exec("javascript:RE.prepareInsert();");
-        exec("javascript:RE.insertImage('" + url + "', '" + alt + "','"+title+"');");
+        exec("javascript:RE.insertImage('" + url + "', '" + alt + "','" + title + "');");
     }
 
     public void setProgress(String str) {
         exec("javascript:RE.prepareInsert();");
-        exec("javascript:RE.progress('"+str+"');");
+        exec("javascript:RE.progress('" + str + "');");
     }
 
-    public void refreshProgess(String pic1,int progress) {
+    public void refreshProgess(String pic1, int progress) {
         exec("javascript:RE.prepareInsert();");
-        exec("javascript:RE.progressRefresh('"+pic1+"', '"+progress+"');");
+        exec("javascript:RE.progressRefresh('" + pic1 + "', '" + progress + "');");
     }
 
     public void insertHr() {

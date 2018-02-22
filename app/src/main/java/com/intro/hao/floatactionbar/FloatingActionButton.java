@@ -33,7 +33,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.intro.hao.mytools.R;
-import com.intro.hao.mytools.Utils.AnimalUtils;
+import com.intro.hao.mytools.Utils.animalUtil.AnimalUtils;
+import com.intro.hao.mytools.Utils.animalUtil.AnimalUtilsModel;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -49,48 +50,58 @@ public class FloatingActionButton extends ImageButton {
     public @interface FAB_SIZE {
     }
 
+    private AnimalUtils animalUtils = new AnimalUtils();
+
     public void lablayoutIsshow() {
         if (getLabelView().getVisibility() == View.VISIBLE) {
-            show();
-        } else {
             dissmiss();
+        } else {
+            show();
         }
     }
 
     public void show() {
         if (getLabelView() != null)
-            new AnimalUtils().setDissmisAnimal(getLabelView(), AnimalUtils.AnimalType.left, new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
+            animalUtils.setAnimalModel(new AnimalUtilsModel(getLabelView(), AnimalUtils.AnimalType.left))
+                    .addTranAnimal(true)
+                    .addAlphaAnimal(true)
+                    .addScaleAnimal(true)
+                    .setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                        }
 
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    getLabelView().setVisibility(View.GONE);
-                }
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            getLabelView().setVisibility(View.VISIBLE);
+                        }
 
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                }
-            });
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                        }
+                    }).startAnimal();
     }
 
     public void dissmiss() {
         if (getLabelView() != null)
-            new AnimalUtils().setShowAnimal(getLabelView(), AnimalUtils.AnimalType.left, new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
+            animalUtils.setAnimalModel(new AnimalUtilsModel(getLabelView(), AnimalUtils.AnimalType.left))
+                    .addTranAnimal(false)
+                    .addAlphaAnimal(false)
+                    .addScaleAnimal(false)
+                    .setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                        }
 
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    getLabelView().setVisibility(View.VISIBLE);
-                }
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            getLabelView().setVisibility(View.GONE);
+                        }
 
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                }
-            });
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                        }
+                    }).startAnimal();
     }
 
 

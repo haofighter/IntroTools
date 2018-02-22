@@ -25,14 +25,14 @@ import kotlinx.android.synthetic.main.flowing_content_layout.*
  */
 abstract class BaseFlowingActivity : AppCompatActivity() {
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.instance.addActivty(this)
         super.setContentView(R.layout.activity_base_base)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-        window.statusBarColor = ContextCompat.getColor(this, R.color.traslant)
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.traslant)
+        }
     }
 
     fun setBackGroundDrowableResuoce(id: Int) {
