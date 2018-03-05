@@ -435,7 +435,7 @@ public class RichEditor extends WebView {
         exec("javascript:RE.removeFormat();");
     }
 
-    public void setHeading(int heading, boolean isItalic, boolean isBold, boolean isStrikeThrough) {
+    public void setHeading(int heading) {//, boolean isItalic, boolean isBold, boolean isStrikeThrough
         exec("javascript:RE.prepareInsert();");
 //        if (isItalic)
 //            exec("javascript:RE.setItalic();");
@@ -466,14 +466,8 @@ public class RichEditor extends WebView {
         exec("javascript:RE.setJustifyRight();");
     }
 
-    public void setBlockquote(boolean b, boolean isItalic, boolean isBold, boolean isStrikeThrough) {
+    public void setBlockquote(boolean b) {
         exec("javascript:RE.prepareInsert();");
-//        if (isItalic)
-//            exec("javascript:RE.setItalic();");
-//        if (isBold)
-//            exec("javascript:RE.setBold();");
-//        if (isStrikeThrough)
-//            exec("javascript:RE.setStrikeThrough();");
         exec("javascript:RE.setBlockquote(" + b + ");");
     }
 

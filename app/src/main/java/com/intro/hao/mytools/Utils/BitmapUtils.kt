@@ -37,6 +37,17 @@ class BitmapUtils {
                 true)
     }
 
+    //decodeStream最大的秘密在于其直接调用JNI>>nativeDecodeAsset()来完成decode，无需再使用java层的createBitmap，从而节省了java层的空间。
+    fun readBitMap(context: Context, resId: Int): Bitmap {
+        val opt = BitmapFactory.Options()
+        opt.inPreferredConfig = Bitmap.Config.RGB_565
+        opt.inPurgeable = true
+        opt.inInputShareable = true
+        //  获取资源图片
+        val `is` = context.resources.openRawResource(resId)
+        return BitmapFactory.decodeStream(`is`, null, opt)
+    }
+
     /**
      * drawable转bitmap
      */

@@ -13,7 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import com.intro.hao.mytools.R
 import com.intro.hao.mytools.Utils.DialogUtils
-import com.intro.hao.mytools.Utils.KeyboardChangeListener
 import com.intro.hao.mytools.Utils.SystemUtils
 import com.intro.hao.mytools.customview.FlowingDraw.ElasticDrawer
 import kotlinx.android.synthetic.main.activity_base_base.*
@@ -35,16 +34,13 @@ abstract class BaseFlowingActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     fun setBackGroundDrowableResuoce(id: Int) {
         base.background = ContextCompat.getDrawable(this, id)
     }
 
     fun setBackGroundColorResuoce(id: Int) {
         base.setBackgroundColor(ContextCompat.getColor(this, id))
-    }
-
-    fun setKeyboardChangeListener(keyBoardListener: KeyboardChangeListener.KeyBoardListener) {
-        KeyboardChangeListener(this).setKeyBoardListener(keyBoardListener)
     }
 
 
@@ -57,6 +53,7 @@ abstract class BaseFlowingActivity : AppCompatActivity() {
         base.setBackgroundResource(id)
     }
 
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     fun setBaseBackGround(drawable: Drawable) {
         base.background = drawable
     }
@@ -116,6 +113,15 @@ abstract class BaseFlowingActivity : AppCompatActivity() {
     fun closeSiding() {
         if (flowingDrawer_base != null) {
             flowingDrawer_base.closeMenu()
+            flowingDrawer_base.setOnDrawerStateChangeListener(object : ElasticDrawer.OnDrawerStateChangeListener {
+                override fun onDrawerStateChange(oldState: Int, newState: Int) {
+                    Log.i("侧滑监听", "oldState==" + oldState + "newState==" + newState)
+                }
+
+                override fun onDrawerSlide(openRatio: Float, offsetPixels: Int) {
+                    Log.i("侧滑监听", "openRatio==" + openRatio + "offsetPixels==" + offsetPixels)
+                }
+            })
         } else {
             Log.e("err", "侧滑栏是个空的")
             throw NullPointerException()

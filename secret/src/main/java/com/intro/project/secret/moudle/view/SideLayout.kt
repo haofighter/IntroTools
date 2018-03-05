@@ -2,11 +2,13 @@ package com.intro.project.secret.moudle.view
 
 import android.content.Context
 import android.content.Intent
+import android.support.v4.widget.DrawerLayout
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
+import com.intro.hao.mytools.Utils.ReflectUtils
 import com.intro.hao.mytools.Utils.SystemUtils
 import com.intro.hao.mytools.base.BackCall
 import com.intro.project.secret.R
@@ -22,33 +24,35 @@ import kotlinx.android.synthetic.main.flowing_layout.view.*
  */
 class SideLayout : RelativeLayout, View.OnClickListener {
     var mContext: Context?
+    var drawerLayout: DrawerLayout?
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.note -> {
-                mContext!!.startActivity(Intent(context, EditNoteActivity::class.java))
-                backCall!!.deal(R.id.note, "")
-            }
-            R.id.music -> {
-                mContext!!.startActivity(Intent(context, MusicHomeFActivity::class.java))
-                backCall!!.deal(R.id.note, "")
-            }
-            R.id.test -> {
-                mContext!!.startActivity(Intent(context, TestActivity::class.java))
-                backCall!!.deal(R.id.note, "")
-            }
-            R.id.plan -> {
-                mContext!!.startActivity(Intent(context, ScheduleActivity::class.java))
-                backCall!!.deal(R.id.note, "")
-            }
+            R.id.note -> mContext!!.startActivity(Intent(context, EditNoteActivity::class.java))
+
+            R.id.music -> mContext!!.startActivity(Intent(context, MusicHomeFActivity::class.java))
+
+            R.id.test -> mContext!!.startActivity(Intent(context, TestActivity::class.java))
+
+            R.id.plan -> mContext!!.startActivity(Intent(context, ScheduleActivity::class.java))
+
         }
-        backCall!!.deal()
+        if (drawerLayout != null) { //设置此布局后  侧滑关闭后触发
+//使用反射来清楚listenner 性能影响过大  卡顿
+//            var filed = ReflectUtils().printClassMethodMessage(drawerLayout!!).getDeclaredField("mListeners")
+//            filed.setAccessible(true);
+//            filed.set(drawerLayout, mutableListOf<DrawerLayout.DrawerListener>())
+            drawerLayout!!.closeDrawers()
+        }
     }
 
+
     constructor(context: Context?) : this(context, null)
-    constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(context: Context?, drawerLayout: DrawerLayout?) : this(context, null, drawerLayout)
+    constructor(context: Context?, attrs: AttributeSet?, drawerLayout: DrawerLayout?) : this(context, attrs, 0, drawerLayout)
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, drawerLayout: DrawerLayout?) : super(context, attrs, defStyleAttr) {
         mContext = context
         initView(context)
+        this.drawerLayout = drawerLayout
     }
 
     fun initView(context: Context?) {
@@ -61,12 +65,6 @@ class SideLayout : RelativeLayout, View.OnClickListener {
         music.setOnClickListener(this)
         test.setOnClickListener(this)
         plan.setOnClickListener(this)
-    }
-
-    var backCall: BackCall? = null
-    fun setOnClickBackCall(backCall: BackCall): SideLayout {
-        this.backCall = backCall
-        return this
     }
 
 }

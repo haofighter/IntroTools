@@ -188,6 +188,12 @@ public class MonthView extends CalendarView {
         return mGestureDetector.onTouchEvent(event);
     }
 
+    @Override
+    public boolean performClick() {
+        super.performClick();
+        return true;
+    }
+
     public int getRowNum() {
         return mRowNum;
     }

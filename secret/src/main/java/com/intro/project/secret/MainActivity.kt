@@ -5,16 +5,18 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import com.intro.hao.mytools.Utils.animalUtil.AnimalUtils
-import com.intro.hao.mytools.Utils.KeyboardChangeListener
 import com.intro.hao.mytools.Utils.SharePreferenceUtils
 import com.intro.hao.mytools.Utils.animalUtil.AnimalUtilsModel
 import com.intro.hao.mytools.base.App
 import com.intro.project.secret.TestAcivity.TestActivity
+import com.intro.project.secret.base.DrawarBaseActiivty
 import com.intro.project.secret.base.FlowingBaseActiivty
+import com.intro.project.secret.model.NoteInfo
 import com.intro.project.secret.moudle.WelcomeActivity
+import com.vicpin.krealmextensions.queryAll
 import kotlinx.android.synthetic.main.activity_secret_main.*
 
-class MainActivity : FlowingBaseActiivty(), View.OnClickListener {
+class MainActivity : DrawarBaseActiivty(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.main_fab -> {
@@ -25,28 +27,28 @@ class MainActivity : FlowingBaseActiivty(), View.OnClickListener {
                 startActivity(Intent(this, TestActivity::class.java))
             }
 
-            R.id.left -> {
+            R.id.main_left -> {
                 if (testAnimal.visibility == View.VISIBLE) {
                     AnimalUtils().setAnimalModel(AnimalUtilsModel(testAnimal, AnimalUtils.AnimalType.left)).addAlphaAnimal(false).addScaleAnimal(false).addTranAnimal(false).startAnimal()
                 } else {
                     AnimalUtils().setAnimalModel(AnimalUtilsModel(testAnimal, AnimalUtils.AnimalType.left)).addAlphaAnimal(true).addScaleAnimal(true).addTranAnimal(true).startAnimal()
                 }
             }
-            R.id.right -> {
+            R.id.main_right -> {
                 if (testAnimal.visibility == View.VISIBLE) {
                     AnimalUtils().setAnimalModel(AnimalUtilsModel(testAnimal, AnimalUtils.AnimalType.right)).addAlphaAnimal(false).addScaleAnimal(false).addTranAnimal(false).startAnimal()
                 } else {
                     AnimalUtils().setAnimalModel(AnimalUtilsModel(testAnimal, AnimalUtils.AnimalType.right)).addAlphaAnimal(true).addScaleAnimal(true).addTranAnimal(true).startAnimal()
                 }
             }
-            R.id.top -> {
+            R.id.main_top -> {
                 if (testAnimal.visibility == View.VISIBLE) {
                     AnimalUtils().setAnimalModel(AnimalUtilsModel(testAnimal, AnimalUtils.AnimalType.top)).addAlphaAnimal(false).addScaleAnimal(false).addTranAnimal(false).startAnimal()
                 } else {
                     AnimalUtils().setAnimalModel(AnimalUtilsModel(testAnimal, AnimalUtils.AnimalType.top)).addAlphaAnimal(true).addScaleAnimal(true).addTranAnimal(true).startAnimal()
                 }
             }
-            R.id.bottom -> {
+            R.id.main_bottom -> {
                 if (testAnimal.visibility == View.VISIBLE) {
                     AnimalUtils().setAnimalModel(AnimalUtilsModel(testAnimal, AnimalUtils.AnimalType.bottom)).addAlphaAnimal(false).addScaleAnimal(false).addTranAnimal(false).startAnimal()
                 } else {
@@ -58,7 +60,7 @@ class MainActivity : FlowingBaseActiivty(), View.OnClickListener {
 
     override fun initView() {
         super.initView()
-        main_fab.setOnClickListener(this)
+        getDrawerContentView().setBackgroundResource(R.color.white)
         main_left.setOnClickListener(this)
         main_right.setOnClickListener(this)
         main_top.setOnClickListener(this)
@@ -67,15 +69,10 @@ class MainActivity : FlowingBaseActiivty(), View.OnClickListener {
 
         SharePreferenceUtils.get().setDate("userId", 1L)
 
-//        Log.i("查询", " " + NoteInfo().queryAll().size)
+        Log.i("查询", " " + NoteInfo().queryAll().size)
     }
 
     override fun LayoutID(): Int {
-        setKeyboardChangeListener(object : KeyboardChangeListener.KeyBoardListener {
-            override fun onKeyboardChange(isShow: Boolean, keyboardHeight: Int) {
-                Log.d("软键盘的监听", "isShow = [$isShow], keyboardHeight = [$keyboardHeight]")
-            }
-        })
         return R.layout.activity_secret_main
     }
 

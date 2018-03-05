@@ -16,7 +16,6 @@ import android.widget.RelativeLayout
 import com.intro.hao.mytools.R
 import com.intro.hao.mytools.Utils.BitmapUtils
 import com.intro.hao.mytools.Utils.DialogUtils
-import com.intro.hao.mytools.Utils.KeyboardChangeListener
 import kotlinx.android.synthetic.main.activity_side_base.*
 
 
@@ -26,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_side_base.*
  */
 abstract class BaseDrawerActivity : AppCompatActivity() {
 
+    lateinit var drawer: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,26 +36,23 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.statusBarColor = ContextCompat.getColor(this, R.color.traslant)
         }
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)  //设置禁止拖拽
+        this.drawer = drawerLayout
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)  //设置禁止拖拽
     }
 
     fun setBaseBackGround(id: Int) {
-        drawerLayout.setBackgroundResource(id)
+        drawer.setBackgroundResource(id)
     }
 
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     fun setBaseBackGround(drawable: Drawable) {
-        drawerLayout.background = drawable
+        drawer.background = drawable
     }
 
     fun setDrawaerCanDrag() {
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)  //设置可以拖拽
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)  //设置可以拖拽
     }
 
-
-    //设置软件盘的监听
-    fun setKeyboardChangeListener(keyBoardListener: KeyboardChangeListener.KeyBoardListener) {
-        KeyboardChangeListener(this).setKeyBoardListener(keyBoardListener)
-    }
 
     fun setRightLayoutParamt(layoutParams: RelativeLayout.LayoutParams) {
         siding_content_left_layout.layoutParams = layoutParams
@@ -102,13 +99,13 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
 
     fun openLeft() {
         if (!drawerLayout.isDrawerOpen(siding_content_left_layout)) {
-            drawerLayout.openDrawer(siding_content_left_layout);
+            drawer.openDrawer(siding_content_left_layout);
         }
     }
 
 
     fun closeLeft() {
-        drawerLayout.closeDrawer(siding_content_left_layout);
+        drawer.closeDrawer(siding_content_left_layout);
     }
 
 

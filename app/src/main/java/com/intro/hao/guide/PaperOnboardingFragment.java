@@ -78,4 +78,7 @@ public class PaperOnboardingFragment extends Fragment {
         this.mOnLeftOutListener = onLeftOutListener;
     }
 
+
+
+
 }

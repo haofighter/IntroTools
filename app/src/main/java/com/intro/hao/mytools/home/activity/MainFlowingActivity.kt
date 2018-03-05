@@ -9,7 +9,6 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.intro.hao.mytools.R
 import com.intro.hao.mytools.ResponseBean.BaseResponce
-import com.intro.hao.mytools.Utils.KeyboardChangeListener
 import com.intro.hao.mytools.Utils.ToastUtils
 import com.intro.hao.mytools.base.ToolBarBaseFlowingActivity
 import com.intro.hao.mytools.constant.AppConstant
@@ -30,11 +29,6 @@ class MainFlowingActivity : ToolBarBaseFlowingActivity(), View.OnClickListener {
     }
 
     override fun initView() {
-        setKeyboardChangeListener(object : KeyboardChangeListener.KeyBoardListener {
-            override fun onKeyboardChange(isShow: Boolean, keyboardHeight: Int) {
-                Log.d("软键盘的监听", "isShow = [$isShow], keyboardHeight = [$keyboardHeight]")
-            }
-        })
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             RetrofitManager().builder(Service::class.java).getCarInfoObservable().subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())

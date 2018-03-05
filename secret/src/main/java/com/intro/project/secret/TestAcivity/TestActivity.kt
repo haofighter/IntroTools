@@ -4,8 +4,9 @@ import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.content.ContextCompat
 import android.util.Log
-import com.intro.hao.mytools.Utils.MusicUtils
-import com.intro.hao.mytools.Utils.SystemUtils
+import android.view.View
+import android.widget.Toast
+import com.intro.hao.mytools.Utils.*
 import com.intro.hao.mytools.Utils.listener.SearchFileLisener
 import com.intro.hao.mytools.Utils.listener.TraverseFileListener
 import com.intro.hao.mytools.base.BaseToolBarActivity
@@ -55,6 +56,17 @@ class TestActivity : BaseToolBarActivity() {
             }
 
             override fun traverseDirectoryItem(directroy: String) {
+            }
+        })
+
+
+        SoftKeyBoardListener.setListener(this, object : SoftKeyBoardListener.OnSoftKeyBoardChangeListener {
+            override fun keyBoardShow(height: Int) {
+                ToastUtils().showMessage("键盘显示 高度" + height + "   屏幕的高度" + SystemUtils().getScreenSize(this@TestActivity).heightPixels)
+            }
+
+            override fun keyBoardHide(height: Int) {
+                ToastUtils().showMessage("键盘隐藏 高度" + height)
             }
         })
     }

@@ -420,6 +420,12 @@ public class FlowingDrawer extends ElasticDrawer {
     }
 
     @Override
+    public boolean performClick() {
+        super.performClick();
+        return true;
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (!mMenuVisible && !mIsDragging && mTouchMode == TOUCH_MODE_NONE) {
             return false;

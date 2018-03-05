@@ -7,7 +7,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 
 /**
- * Created by haozhang on 2018/1/3.
+ * 传感器 相关帮助类
  */
 class OrientationListener : SensorEventListener {
 

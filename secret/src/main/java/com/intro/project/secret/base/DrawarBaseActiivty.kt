@@ -1,8 +1,17 @@
 package com.intro.project.secret.base
 
+import android.content.Intent
+import android.support.v4.widget.DrawerLayout
+import android.view.View
+import com.intro.hao.mytools.base.BackCall
 import com.intro.hao.mytools.base.BaseToolBarActivity
 import com.intro.hao.mytools.customview.NavigationBar
 import com.intro.hao.mytools.customview.NavigationTag
+import com.intro.project.secret.R
+import com.intro.project.secret.TestAcivity.TestActivity
+import com.intro.project.secret.moudle.music.MusicHomeFActivity
+import com.intro.project.secret.moudle.note.EditNoteActivity
+import com.intro.project.secret.moudle.schedule.ScheduleActivity
 import com.intro.project.secret.moudle.view.SideLayout
 
 
@@ -11,17 +20,18 @@ import com.intro.project.secret.moudle.view.SideLayout
  */
 abstract class DrawarBaseActiivty : BaseToolBarActivity() {
     override fun initView() {
-        //初始化realm   并给定一个默认设置
-        setDrawerContentView(SideLayout(this))
+
+        setDrawerContentView(SideLayout(this, drawer))
         navigation.setTitle("首页")
-        navigation.addListener(object : NavigationBar.NavigationListener {
-            override fun onButtonClick(button: NavigationTag): Boolean {
-                when (button) {
-                    NavigationTag.LEFT_VIEW -> openLeft()
-                }
-                return false
-            }
-        })
+        navigation.addListener(
+                object : NavigationBar.NavigationListener {
+                    override fun onButtonClick(button: NavigationTag): Boolean {
+                        when (button) {
+                            NavigationTag.LEFT_VIEW -> openLeft()
+                        }
+                        return false
+                    }
+                })
     }
 
     override fun onDestroy() {

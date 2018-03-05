@@ -15,20 +15,25 @@ import android.text.Spannable
 import android.text.TextUtils
 import android.util.Log
 import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.Animation
 import android.widget.TextView
 import com.intro.hao.mytools.Utils.DialogUtils
-import com.intro.hao.mytools.Utils.KeyboardChangeListener
+import com.intro.hao.mytools.Utils.SoftKeyBoardListener
+import com.intro.hao.mytools.Utils.SystemUtils
 import com.intro.hao.mytools.Utils.ToastUtils
+import com.intro.hao.mytools.Utils.animalUtil.AnimalUtils
+import com.intro.hao.mytools.Utils.animalUtil.AnimalUtilsModel
 import com.intro.hao.mytools.base.BackCall
 import com.intro.hao.mytools.customview.NavigationBar
 import com.intro.hao.mytools.customview.NavigationTag
 import com.intro.hao.mytools.customview.richeditor.RichEditor
 import com.intro.project.secret.R
 import com.intro.project.secret.base.DrawarBaseActiivty
+import com.intro.project.secret.model.NoteInfo
+import com.vicpin.krealmextensions.save
 import kotlinx.android.synthetic.main.activity_edit_note.*
-import kotlinx.android.synthetic.main.add_fun_set_layout.*
+import kotlinx.android.synthetic.main.flowing_layout.*
 import kotlinx.android.synthetic.main.font_set_layout.*
 import java.util.*
 
@@ -49,12 +54,6 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.action_a -> {
-                action_a.lablayoutIsshow()
-            }
-            R.id.action_b -> {
-                action_b.lablayoutIsshow()
-            }
             R.id.richEditor -> {
                 multiple_actions.collapse()
             }
@@ -68,19 +67,19 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
                 richEditor.setStrikeThrough()
             }
             R.id.text_blockquote -> {//块引用
-                richEditor.setBlockquote(text_blockquote.isChecked, text_italic.isChecked, text_bold.isChecked, text_strikethrough.isChecked)
+                richEditor.setBlockquote(text_blockquote.isChecked)
             }
             R.id.text_h1 -> {//H1字体
-                richEditor.setHeading(1, text_italic.isChecked, text_bold.isChecked, text_strikethrough.isChecked)
+                richEditor.setHeading(1)
             }
             R.id.text_h2 -> {//H2字体
-                richEditor.setHeading(2, text_italic.isChecked, text_bold.isChecked, text_strikethrough.isChecked)
+                richEditor.setHeading(2)
             }
             R.id.text_h3 -> {//H3字体
-                richEditor.setHeading(3, text_italic.isChecked, text_bold.isChecked, text_strikethrough.isChecked)
+                richEditor.setHeading(3)
             }
             R.id.text_h4 -> {//H4字体
-                richEditor.setHeading(4, text_italic.isChecked, text_bold.isChecked, text_strikethrough.isChecked)
+                richEditor.setHeading(4)
             }
             R.id.add_image -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -95,6 +94,41 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
             }
             R.id.add_split -> {
                 richEditor.insertHr()
+            }
+            R.id.action_undo -> {
+                richEditor.undo()
+            }
+            R.id.action_redo -> {
+                richEditor.redo()
+            }
+            R.id.action_font -> {//显示隐藏 字体设置布局
+                if (font_set_layout.visibility == View.GONE) {
+                    AnimalUtils().setAnimalModel(AnimalUtilsModel(font_set_layout, AnimalUtils.AnimalType.bottom)).addTranAnimal(true).setAnimationListener(object : Animation.AnimationListener {
+                        override fun onAnimationRepeat(p0: Animation?) {
+
+                        }
+
+                        override fun onAnimationEnd(p0: Animation?) {
+                            font_set_layout.visibility = View.VISIBLE
+                        }
+
+                        override fun onAnimationStart(p0: Animation?) {
+                        }
+                    }).startAnimal()
+                } else {
+                    AnimalUtils().setAnimalModel(AnimalUtilsModel(font_set_layout, AnimalUtils.AnimalType.bottom)).addTranAnimal(false).setAnimationListener(object : Animation.AnimationListener {
+                        override fun onAnimationRepeat(p0: Animation?) {
+
+                        }
+
+                        override fun onAnimationEnd(p0: Animation?) {
+                            font_set_layout.visibility = View.GONE
+                        }
+
+                        override fun onAnimationStart(p0: Animation?) {
+                        }
+                    }).startAnimal()
+                }
             }
         }
     }
@@ -178,7 +212,6 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
         //点击取消的监听
         view.findViewById<TextView>(R.id.btn_cancel).setOnClickListener(View.OnClickListener { linkDialog.dismiss() })
 
-
         linkDialog.setCancelable(false)
         linkDialog.setView(view, 0, 0, 0, 0) // 设置 view
         linkDialog.show()
@@ -205,12 +238,22 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
         initRichEditSettingView()
         initRichEditSetting()
 
-        setKeyboardChangeListener(object : KeyboardChangeListener.KeyBoardListener {
-            override fun onKeyboardChange(isShow: Boolean, keyboardHeight: Int) {
-                Log.d("软键盘的监听", "isShow = [$isShow], keyboardHeight = [$keyboardHeight]")
+        SoftKeyBoardListener.setListener(this, object : SoftKeyBoardListener.OnSoftKeyBoardChangeListener {
+            override fun keyBoardShow(height: Int) {
+                richEditor.layout(richEditor.left, richEditor.top, richEditor.right, richEditor.bottom - height)
+                bottom_layout.layout(font_set_layout.left, richEditor.bottom, font_set_layout.right, richEditor.bottom + bottom_layout.height)
+
+                Log.i("", "修改后的高度" + richEditor.bottom + "键盘显示 高度" + height + "屏幕的高度" + SystemUtils().getScreenSize(this@EditNoteActivity).heightPixels + "     底部布局的高度" + bottom_layout.height + "底部布局" + bottom_layout.top + "---" + bottom_layout.bottom)
+                ToastUtils().showMessage("键盘显示 高度" + height + "   屏幕的高度" + SystemUtils().getScreenSize(this@EditNoteActivity).heightPixels)
+            }
+
+            override fun keyBoardHide(height: Int) {
+                richEditor.layout(richEditor.left, richEditor.top, richEditor.right, SystemUtils().getScreenSize(this@EditNoteActivity).heightPixels)
+                ToastUtils().showMessage("键盘隐藏 高度" + height)
             }
         })
     }
+
 
     //保存笔记
     fun saveNote() {
@@ -221,7 +264,10 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
 
                 override fun deal(tag: Any, vararg obj: Any) {
                     when (tag) {
-                        R.id.confirm -> finish()
+                        R.id.confirm -> {
+                            NoteInfo(richEditor.html, System.currentTimeMillis()).save()
+                            finish()
+                        }
                     }
                 }
             })
@@ -230,16 +276,11 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
         }
     }
 
-
-    override fun onResume() {
-        super.onResume()
-    }
-
     private fun initRichEditSettingView() {
-        action_a.setElseView(LayoutInflater.from(this).inflate(R.layout.font_set_layout, null))
-        action_a.setOnClickListener(this)
-        action_b.setElseView(LayoutInflater.from(this).inflate(R.layout.add_fun_set_layout, null))
-        action_b.setOnClickListener(this)
+//        action_a.setElseView(LayoutInflater.from(this).inflate(R.layout.font_set_layout, null))
+//        action_a.setOnClickListener(this)
+//        action_b.setElseView(LayoutInflater.from(this).inflate(R.layout.add_fun_set_layout, null))
+//        action_b.setOnClickListener(this)
 
         text_bold.setOnClickListener(this)
         text_blockquote.setOnClickListener(this)
@@ -249,9 +290,15 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
         text_h2.setOnClickListener(this)
         text_h3.setOnClickListener(this)
         text_h4.setOnClickListener(this)
+        action_redo.setOnClickListener(this)
+        action_undo.setOnClickListener(this)
+        action_font.setOnClickListener(this)
         add_image.setOnClickListener(this)
         add_link.setOnClickListener(this)
         add_split.setOnClickListener(this)
+//        add_image.setOnClickListener(this)
+//        add_link.setOnClickListener(this)
+//        add_split.setOnClickListener(this)
     }
 
     private fun initRichEditSetting() {
@@ -264,14 +311,13 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
          */
         richEditor.setOnDecorationChangeListener(object : RichEditor.OnDecorationStateListener {
             override fun onStateChangeListener(text: String, types: List<RichEditor.Type>) {
-                text_bold.isChecked = types.contains(RichEditor.Type.BOLD)
-                text_italic.isChecked = types.contains(RichEditor.Type.ITALIC)
-                //块引用
-                text_strikethrough.isChecked = types.contains(RichEditor.Type.STRIKETHROUGH)
-                text_h1.isChecked = types.contains(RichEditor.Type.H1)
-                text_h2.isChecked = types.contains(RichEditor.Type.H2)
-                text_h3.isChecked = types.contains(RichEditor.Type.H3)
-                text_h4.isChecked = types.contains(RichEditor.Type.H4)
+//                text_bold.isChecked = types.contains(RichEditor.Type.BOLD)
+//                text_italic.isChecked = types.contains(RichEditor.Type.ITALIC)
+//                //块引用
+//                text_strikethrough.isChecked = types.contains(RichEditor.Type.STRIKETHROUGH)
+//                text_h1.isChecked = types.contains(RichEditor.Type.H1)
+//                ext_h3.isChecked = types.contains(RichEditor.Type.H3)
+//                text_h4.isChecked = types.contains(RichEditor.Type.H4)
             }
         })
 
@@ -298,6 +344,7 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
                 override fun deal(tag: Any, vararg obj: Any) {
                     when (tag) {
                         R.id.confirm -> {
+//                            showLoading()
                             finish()
                         }
                     }

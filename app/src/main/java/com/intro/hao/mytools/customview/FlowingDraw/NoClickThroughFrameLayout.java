@@ -27,4 +27,9 @@ public class NoClickThroughFrameLayout  extends BuildLayerFrameLayout {
     public boolean onTouchEvent(MotionEvent event) {
         return true;
     }
+    @Override
+    public boolean performClick() {
+        super.performClick();
+        return true;
+    }
 }

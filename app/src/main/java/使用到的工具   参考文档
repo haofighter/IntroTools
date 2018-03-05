@@ -4,3 +4,27 @@ kotlin  数据库支持   Realm
 
 需要集成插件  classpath "io.realm:realm-gradle-plugin:4.3.1"
 
+
+遇到的问题一：NoteInfo is not part of the schema for this Realm
+  1。检查是是否初始化了 Realm
+   参考：          Realm.init(this)
+                  val userAddressConfig = RealmConfiguration.Builder().name("user-db").schemaVersion(1).deleteRealmIfMigrationNeeded().build()
+                  // clear previous data for fresh start
+                  Realm.deleteRealm(Realm.getDefaultConfiguration())
+                  Realm.deleteRealm(userAddressConfig)
+
+                  //Optional: if you want to specify your own realm configuration, you have two ways:
+
+
+                  //配置自己的表文件  需要对所有需要保存的表进行创建
+                  //1. If you want to specify a configuration for a specific module, you can use:
+                  //        RealmConfigStore.initModule(NoteInfo::class.java, userAddressConfig)
+                  //2. You can specify any configuration per model with:
+                  RealmConfigStore.init(NoteInfo::class.java, userAddressConfig)
+                  //RealmConfigStore.init(Address::class.java, userAddressConfig)
+
+ 2。检查gradle 中有没有配置
+            apply plugin: 'realm-android'
+
+
+
