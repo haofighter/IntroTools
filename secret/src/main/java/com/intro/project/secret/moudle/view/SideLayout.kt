@@ -3,6 +3,7 @@ package com.intro.project.secret.moudle.view
 import android.content.Context
 import android.content.Intent
 import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.ActionBarDrawerToggle
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,11 +11,13 @@ import android.view.View
 import android.widget.RelativeLayout
 import com.intro.hao.mytools.Utils.ReflectUtils
 import com.intro.hao.mytools.Utils.SystemUtils
+import com.intro.hao.mytools.Utils.ToastUtils
 import com.intro.hao.mytools.base.BackCall
 import com.intro.project.secret.R
 import com.intro.project.secret.TestAcivity.TestActivity
 import com.intro.project.secret.moudle.music.MusicHomeFActivity
 import com.intro.project.secret.moudle.note.EditNoteActivity
+import com.intro.project.secret.moudle.note.ShowNoteListActivity
 import com.intro.project.secret.moudle.schedule.ScheduleActivity
 import kotlinx.android.synthetic.main.flowing_layout.view.*
 
@@ -25,17 +28,9 @@ import kotlinx.android.synthetic.main.flowing_layout.view.*
 class SideLayout : RelativeLayout, View.OnClickListener {
     var mContext: Context?
     var drawerLayout: DrawerLayout?
+    var v: View? = null
     override fun onClick(v: View?) {
-        when (v!!.id) {
-            R.id.note -> mContext!!.startActivity(Intent(context, EditNoteActivity::class.java))
-
-            R.id.music -> mContext!!.startActivity(Intent(context, MusicHomeFActivity::class.java))
-
-            R.id.test -> mContext!!.startActivity(Intent(context, TestActivity::class.java))
-
-            R.id.plan -> mContext!!.startActivity(Intent(context, ScheduleActivity::class.java))
-
-        }
+        this.v = v
         if (drawerLayout != null) { //设置此布局后  侧滑关闭后触发
 //使用反射来清楚listenner 性能影响过大  卡顿
 //            var filed = ReflectUtils().printClassMethodMessage(drawerLayout!!).getDeclaredField("mListeners")
@@ -53,6 +48,37 @@ class SideLayout : RelativeLayout, View.OnClickListener {
         mContext = context
         initView(context)
         this.drawerLayout = drawerLayout
+        if (drawerLayout == null) {
+            Log.e("errer", "需要指定一个关联的侧滑布局")
+            return
+        }
+        drawerLayout!!.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerStateChanged(newState: Int) {
+            }
+
+            override fun onDrawerSlide(drawerView: View?, slideOffset: Float) {
+            }
+
+            override fun onDrawerClosed(drawerView: View?) {
+                if (v == null) return
+                else {
+                    when (v!!.id) {
+                        R.id.note -> mContext!!.startActivity(Intent(context, ShowNoteListActivity::class.java))
+
+                        R.id.music -> mContext!!.startActivity(Intent(context, MusicHomeFActivity::class.java))
+
+                        R.id.test -> mContext!!.startActivity(Intent(context, TestActivity::class.java))
+
+                        R.id.plan -> mContext!!.startActivity(Intent(context, ScheduleActivity::class.java))
+
+                    }
+                    v = null//将v重置为空  防止后续直接关闭侧滑时出现跳转
+                }
+            }
+
+            override fun onDrawerOpened(drawerView: View?) {
+            }
+        })
     }
 
     fun initView(context: Context?) {

@@ -33,7 +33,6 @@ import com.intro.project.secret.base.DrawarBaseActiivty
 import com.intro.project.secret.model.NoteInfo
 import com.vicpin.krealmextensions.save
 import kotlinx.android.synthetic.main.activity_edit_note.*
-import kotlinx.android.synthetic.main.flowing_layout.*
 import kotlinx.android.synthetic.main.font_set_layout.*
 import java.util.*
 
@@ -221,12 +220,20 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
         super.initView()
         navigation.setRightText("保存")
         navigation.setTitle("写记事")
+        navigation.setLeftImage(R.mipmap.home)
         navigation.setListener(object : NavigationBar.NavigationListener {
             override fun onButtonClick(button: NavigationTag): Boolean {
                 when (button) {
                     NavigationTag.RIGHT_VIEW -> {
                         Log.i("TAG", "点击了完成")
                         saveNote()
+                    }
+                    NavigationTag.LEFT_VIEW -> {
+                        if (richEditor.html.length != 0) {
+                            NoteInfo(richEditor.html, System.currentTimeMillis(), 0).save()
+                            ToastUtils().showMessage("记事已保存")
+                        }
+
                     }
                 }
                 return true
@@ -265,16 +272,22 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
                 override fun deal(tag: Any, vararg obj: Any) {
                     when (tag) {
                         R.id.confirm -> {
-                            NoteInfo(richEditor.html, System.currentTimeMillis()).save()
+                            NoteInfo(richEditor.html, System.currentTimeMillis(), 0).save()
+                            sendBroadcast(Intent("com.intro.project.sercret.note.refresh"))
+                            startActivity(Intent(this@EditNoteActivity, ShowNoteListActivity::class.java))
                             finish()
                         }
                     }
                 }
             })
         } else {
+            NoteInfo(richEditor.html, System.currentTimeMillis(), 0).save()
+            sendBroadcast(Intent("com.intro.project.sercret.note.refresh"))
+            startActivity(Intent(this@EditNoteActivity, ShowNoteListActivity::class.java))
             finish()
         }
     }
+
 
     private fun initRichEditSettingView() {
 //        action_a.setElseView(LayoutInflater.from(this).inflate(R.layout.font_set_layout, null))
@@ -345,6 +358,7 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
                     when (tag) {
                         R.id.confirm -> {
 //                            showLoading()
+                            startActivity(Intent(this@EditNoteActivity, ShowNoteListActivity::class.java))
                             finish()
                         }
                     }

@@ -134,4 +134,9 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
         }
         startActivity(intent)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        App.instance.removeActivty(this)
+    }
 }

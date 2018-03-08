@@ -66,6 +66,10 @@ open class App : Application() {
         activities.add(activity)
     }
 
+    fun removeActivty(activity: Activity) {
+        activities.remove(activity)
+    }
+
     fun finishActivty() {
         for (i in activities.indices) {
             activities[i].finish()

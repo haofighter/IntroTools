@@ -13,6 +13,27 @@ class DataUtils {
     /**
      * 将long类型的数据和 date类型的数据转成 yyyy-MM-dd HH:mm:ss
      */
+    fun FormatDate(time: Any?, fromat: String): String? {
+        var formatDateString: String = ""
+        try {
+            val sdf = SimpleDateFormat(fromat)
+            if (time is Long) {
+                val date = Date(time!!.toString().toLong())
+                formatDateString = sdf.format(date)
+            } else if (time is Date) {
+                formatDateString = sdf.format(time)
+            }
+        } catch (e: Exception) {
+            Log.e("时间转换错误", "位置 Utils.FormatDate")
+            return ""
+        }
+        return formatDateString
+    }
+
+
+    /**
+     * 将long类型的数据和 date类型的数据转成 yyyy-MM-dd HH:mm:ss
+     */
     fun FormatDate(time: Any?): String? {
         var formatDateString: String = ""
         try {

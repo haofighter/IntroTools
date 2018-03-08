@@ -3,6 +3,7 @@ package com.intro.project.secret.base
 import android.content.Intent
 import android.support.v4.widget.DrawerLayout
 import android.view.View
+import com.intro.hao.mytools.base.App
 import com.intro.hao.mytools.base.BackCall
 import com.intro.hao.mytools.base.BaseToolBarActivity
 import com.intro.hao.mytools.customview.NavigationBar
@@ -34,8 +35,5 @@ abstract class DrawarBaseActiivty : BaseToolBarActivity() {
                 })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 
 }

@@ -10,11 +10,11 @@ import com.intro.hao.mytools.Utils.animalUtil.AnimalUtilsModel
 import com.intro.hao.mytools.base.App
 import com.intro.project.secret.TestAcivity.TestActivity
 import com.intro.project.secret.base.DrawarBaseActiivty
-import com.intro.project.secret.base.FlowingBaseActiivty
 import com.intro.project.secret.model.NoteInfo
 import com.intro.project.secret.moudle.WelcomeActivity
-import com.vicpin.krealmextensions.queryAll
+import com.vicpin.krealmextensions.*
 import kotlinx.android.synthetic.main.activity_secret_main.*
+
 
 class MainActivity : DrawarBaseActiivty(), View.OnClickListener {
     override fun onClick(v: View?) {
@@ -70,6 +70,28 @@ class MainActivity : DrawarBaseActiivty(), View.OnClickListener {
         SharePreferenceUtils.get().setDate("userId", 1L)
 
         Log.i("查询", " " + NoteInfo().queryAll().size)
+        Log.i("查询", " " + NoteInfo().queryAll().toString())
+
+        Log.i("查询123131", NoteInfo().query {
+            this.equalTo("userID", 0 as Int)
+                    .and().contains("constent", "123")
+                    .or().contains("constent", "345")
+        }.sortedByDescending { "time" }.toString())
+        NoteInfo().delete {
+            this.equalTo("userID", 0 as Int)
+                    .and().contains("constent", "123")
+                    .or().contains("constent", "345")
+        }
+        NoteInfo().queryFirst()
+
+//        var searchInfo: RealmResults<NoteInfo> = Realm.getDefaultInstance().where(NoteInfo::class.java).equalTo("userID", 0 as Int).findAll()
+//        searchInfo.addChangeListener((
+//                object : RealmChangeListener<RealmResults<NoteInfo>> {
+//                    override fun onChange(results: RealmResults<NoteInfo>?) {
+//                        Log.i("查询", " " + results.toString())
+//                    }
+//                }))
+
     }
 
     override fun LayoutID(): Int {

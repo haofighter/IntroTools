@@ -77,7 +77,6 @@ class MusicHomeFActivity : FlowingBaseActiivty() {
         MusicUtils().searchFlie(object : SearchMusicLisener {
             override fun finish(result: MutableList<MusicInfo>?) {
                 musicSearch = result as MutableList<VadioFileInfo>
-//                musicSearch.saveAll()
                 if (musicSearch.size > 0)
                     setShowMusic()
             }
