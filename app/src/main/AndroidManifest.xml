@@ -24,15 +24,16 @@
         <!--android:name="APK_SHOW"-->
         <!--android:value="${APK_SHOW_VALUE}" />-->
 
-        <activity android:name=".home.activity.MainFlowingActivity">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
 
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
+        <!--启动页设置-->
+        <!--<activity android:name=".home.activity.MainFlowingActivity">-->
+        <!--&lt;!&ndash;<intent-filter>&ndash;&gt;-->
+        <!--&lt;!&ndash;<action android:name="android.intent.action.MAIN" />&ndash;&gt;-->
 
-        <activity android:name=".home.activity.HomeFlowingActivity" />
+        <!--&lt;!&ndash;<category android:name="android.intent.category.LAUNCHER" />&ndash;&gt;-->
+        <!--&lt;!&ndash;</intent-filter>&ndash;&gt;-->
+        <!--</activity>-->
+
 
     </application>
 

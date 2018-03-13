@@ -1,6 +1,7 @@
 package com.intro.project.secret.base
 
 import com.intro.hao.mytools.base.App
+import com.intro.project.secret.model.ClockInfo
 import com.intro.project.secret.model.NoteInfo
 import com.vicpin.krealmextensions.RealmConfigStore
 import io.realm.Realm
@@ -27,19 +28,20 @@ class BaseApp : App() {
      * 数据库框架初始化
      */
     private fun initRealm() {
-            Realm.init(this)
-            val userAddressConfig = RealmConfiguration.Builder().name("user-db").schemaVersion(1).deleteRealmIfMigrationNeeded().build()
-            // clear previous data for fresh start
-            Realm.deleteRealm(Realm.getDefaultConfiguration())
-            Realm.deleteRealm(userAddressConfig)
+        Realm.init(this)
+        val userAddressConfig = RealmConfiguration.Builder().name("secret").schemaVersion(1).deleteRealmIfMigrationNeeded().build()
+        // clear previous data for fresh start
+        Realm.deleteRealm(Realm.getDefaultConfiguration())
+        Realm.deleteRealm(userAddressConfig)
 
-            //Optional: if you want to specify your own realm configuration, you have two ways:
+        //Optional: if you want to specify your own realm configuration, you have two ways:
 
-            //1. If you want to specify a configuration for a specific module, you can use:
-    //        RealmConfigStore.initModule(NoteInfo::class.java, userAddressConfig)
-            //2. You can specify any configuration per model with:
-            RealmConfigStore.init(NoteInfo::class.java, userAddressConfig)
-            //RealmConfigStore.init(Address::class.java, userAddressConfig)
+        //1. If you want to specify a configuration for a specific module, you can use:
+        //        RealmConfigStore.initModule(NoteInfo::class.java, userAddressConfig)
+        //2. You can specify any configuration per model with:
+        RealmConfigStore.init(NoteInfo::class.java, userAddressConfig)
+        RealmConfigStore.init(ClockInfo::class.java, userAddressConfig)
+        //RealmConfigStore.init(Address::class.java, userAddressConfig)
     }
 
 }

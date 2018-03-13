@@ -21,8 +21,11 @@ import com.intro.project.secret.moudle.view.SideLayout
  */
 abstract class DrawarBaseActiivty : BaseToolBarActivity() {
     override fun initView() {
-
         setDrawerContentView(SideLayout(this, drawer))
+        initNavigation()
+    }
+
+    open fun initNavigation() {
         navigation.setTitle("首页")
         navigation.addListener(
                 object : NavigationBar.NavigationListener {

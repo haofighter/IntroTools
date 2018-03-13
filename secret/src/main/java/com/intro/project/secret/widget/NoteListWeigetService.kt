@@ -1,13 +1,16 @@
 package com.intro.project.secret.widget
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
+import com.intro.hao.mytools.Utils.DataUtils
 import com.intro.project.secret.R
 import com.intro.project.secret.model.NoteInfo
+import com.intro.project.secret.moudle.note.EditNoteActivity
 import com.vicpin.krealmextensions.queryAll
 
 
@@ -54,12 +57,19 @@ class NoteListWeigetService : RemoteViewsService() {
 
         override fun getViewAt(position: Int): RemoteViews {
             val rv = RemoteViews(mContext!!.getPackageName(), R.layout.text_layout)
-            rv.setTextViewText(R.id.text, NoteInfo().queryAll()!!.get(position).constent)
+            rv.setTextViewText(R.id.note_widget_item_title, NoteInfo().queryAll()!!.get(position).constent)
+            rv.setTextViewText(R.id.note_widget_item_time, DataUtils().FormatDate(NoteInfo().queryAll()!!.get(position).time, "MM/dd"))
 
-            // 设置 第position位的“视图”对应的响应事件
+//            // 设置 第position位的“视图”对应的响应事件
             val fillInIntent = Intent()
-            fillInIntent.putExtra(NoteWidgetProvider().noteListExtra, position)
-            rv.setOnClickFillInIntent(R.id.text, fillInIntent)
+            fillInIntent.putExtra(NoteWidgetProvider().noteListExtra, NoteInfo().queryAll()!!.get(position).id)
+            rv.setOnClickFillInIntent(R.id.ll_note_item, fillInIntent)
+
+//            val skipIntent = Intent(mContext, EditNoteActivity::class.java)
+//            skipIntent.putExtra(NoteWidgetProvider().noteListExtra, NoteInfo().queryAll()!!.get(position).time)
+//            val pi = PendingIntent.getActivity(mContext, 200, skipIntent, PendingIntent.FLAG_CANCEL_CURRENT)
+//            rv.setOnClickPendingIntent(R.id.ll_note_item, pi)
+
 
             return rv
         }

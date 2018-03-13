@@ -13,7 +13,9 @@ import com.intro.hao.mytools.Utils.ToastUtils
 import com.intro.project.secret.MainActivity
 import com.intro.project.secret.R
 import android.widget.Toast
+import com.intro.project.secret.model.NoteInfo
 import com.intro.project.secret.moudle.note.EditNoteActivity
+import android.support.v4.content.ContextCompat.startActivity
 
 
 /**
@@ -40,7 +42,6 @@ class NoteWidgetProvider : AppWidgetProvider() {
             val skipIntent = Intent(context, EditNoteActivity::class.java)
             val pi = PendingIntent.getActivity(context, 200, skipIntent, PendingIntent.FLAG_CANCEL_CURRENT)
             rv.setOnClickPendingIntent(R.id.weiget_note_title, pi)
-
 
 
             val serviceIntent = Intent(context, NoteListWeigetService::class.java)
@@ -81,20 +82,24 @@ class NoteWidgetProvider : AppWidgetProvider() {
             }
             noteListClick -> {
                 // 接受“gridview”的点击事件的广播
-                val appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                        AppWidgetManager.INVALID_APPWIDGET_ID)
-                val viewIndex = intent.getIntExtra(noteListExtra, 0)
-                Toast.makeText(context, "Touched view $viewIndex", Toast.LENGTH_SHORT).show()
+//                val appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+//                        AppWidgetManager.INVALID_APPWIDGET_ID)
+                val viewIndex = intent.getLongExtra(noteListExtra, 0L)
+                Toast.makeText(context, "Touched view " + viewIndex, Toast.LENGTH_SHORT).show()
+                intent.setAction("com.intro.project.sercret.note.EDIT")
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setClassName("com.intro.project.secret", "com.intro.project.secret.moudle.note.EditNoteActivity")
+                context!!.startActivity(intent)
             }
 
 
             noteWidgetRefresh -> {
                 Log.i("小部件", "小部件刷新广播被接收")
                 AppWidgetManager.getInstance(context).notifyAppWidgetViewDataChanged(getAllWidght(context), R.id.content_list);
+
             }
         }
 //        context!!.startActivity(Intent(context, MainActivity::class.java))
-
     }
 
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {

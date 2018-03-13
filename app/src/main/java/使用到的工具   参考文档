@@ -5,7 +5,7 @@ kotlin  数据库支持   Realm
 需要集成插件  classpath "io.realm:realm-gradle-plugin:4.3.1"
 
 
-遇到的问题一：NoteInfo is not part of the schema for this Realm
+问题一：NoteInfo is not part of the schema for this Realm
   1。检查是是否初始化了 Realm
    参考：          Realm.init(this)
                   val userAddressConfig = RealmConfiguration.Builder().name("user-db").schemaVersion(1).deleteRealmIfMigrationNeeded().build()
@@ -27,4 +27,8 @@ kotlin  数据库支持   Realm
             apply plugin: 'realm-android'
 
 
+
+问题二 ：
+ 无法从最终NoteInfo进行继承
+ 需要创建表的model未设置为open 所以权限不足 导致出现此问题
 

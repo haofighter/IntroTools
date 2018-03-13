@@ -23,17 +23,23 @@ import android.os.Bundle
 import android.os.Parcel
 import com.intro.hao.mytools.constant.AppConstant
 import com.intro.project.clock.clockutils.SpecialBackCall
+import com.intro.project.clock.service.AlarmService
 import com.intro.project.secret.moudle.note.EditNoteActivity
 import com.intro.project.secret.MainActivity
-import com.intro.project.secret.model.ClockInfo
-import com.intro.project.secret.timechange.TimeChangeService
-import com.vicpin.krealmextensions.save
 
 
-class TestActivity : DrawarBaseActiivty(), View.OnClickListener {
+class ListTestActivity : DrawarBaseActiivty(), View.OnClickListener {
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onClick(p0: View?) {
+        var intent = Intent(this, AlarmService::class.java)
+//        intent.putExtra(AppConstant().BACK_CALL, object : SpecialBackCall(com.intro.hao.mytools.R.id.set_a_clock) {
+//
+//            override fun deal(vararg objects: Any) {
+//                Log.i("tag", "定时任务回调启动了")
+//                ToastUtils().showMessage("定时任务回调启动了·")
+//            }
+//        })
 
         when (p0) {
             add_weiget -> {
@@ -42,17 +48,14 @@ class TestActivity : DrawarBaseActiivty(), View.OnClickListener {
                 startService(intent)
             }
             add_weiget1 -> {
-
-                val service = Intent(this, TimeChangeService::class.java)
-                startService(service)
+                intent.putExtra(AppConstant().HORIZENSERVICE_TIME, (System.currentTimeMillis() + 20000) as Long)
+                intent.putExtra(AppConstant().ALAERN_TAG, com.intro.hao.mytools.R.id.set_a_clock)
+                startService(intent)
             }
             add_weiget2 -> {
-                var clockInfo = ClockInfo()
-                clockInfo.clockID = System.currentTimeMillis()
-                clockInfo.clockStartTimeLong = System.currentTimeMillis() + 60000
-                clockInfo.clockType = "1"
-                clockInfo.save()
-                Log.i("闹钟信息", "闹钟信息已存入数据库" + (System.currentTimeMillis() + 60000))
+                intent.putExtra(AppConstant().HORIZENSERVICE_TIME, (System.currentTimeMillis() + 30000) as Long)
+                intent.putExtra(AppConstant().ALAERN_TAG, com.intro.hao.mytools.R.id.set_a_clock)
+                startService(intent)
             }
         }
 
@@ -74,23 +77,11 @@ class TestActivity : DrawarBaseActiivty(), View.OnClickListener {
 
         })
 
-        SoftKeyBoardListener.setListener(this, object : SoftKeyBoardListener.OnSoftKeyBoardChangeListener {
-            override fun keyBoardShow(height: Int) {
-                ToastUtils().showMessage("键盘显示 高度" + height + "   屏幕的高度" + SystemUtils().getScreenSize(this@TestActivity).heightPixels)
-            }
 
-            override fun keyBoardHide(height: Int) {
-                ToastUtils().showMessage("键盘隐藏 高度" + height)
-            }
-        })
-
-        add_weiget.setOnClickListener(this)
-        add_weiget1.setOnClickListener(this)
-        add_weiget2.setOnClickListener(this)
     }
 
     override fun LayoutID(): Int {
-        return R.layout.activity_test
+        return R.layout.activity_list_test
     }
 
 }

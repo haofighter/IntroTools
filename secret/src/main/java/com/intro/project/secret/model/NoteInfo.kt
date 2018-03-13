@@ -3,24 +3,27 @@ package com.intro.project.secret.model
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.Required
+import java.io.Serializable
 
 
 /**
- * Created by hao on 2018/3/5.
+ * 笔记信息表创建
  */
 
-open class NoteInfo() : RealmObject() {
+open class NoteInfo() : RealmObject(), Serializable {
 
-    constructor(constent: String, time: Long, userID: Int) : this() {
+    constructor(constent: String, time: Long, userID: Int, id: String) : this() {
         this.constent = constent
         this.time = time
         this.userID = userID
+        this.id = id
     }
 
-    var constent: String = ""
-    var userID: Int = 0
+    var constent: String = "" //内容
+    var userID: Int = 0   //创建的用户id
     @PrimaryKey
-    var time: Long = 0
+    var id: String = ""   //唯一标识id
+    var time: Long = 0    //创建的时间
 
     override fun toString(): String {
         return constent + "  ----" + time + "  =====" + userID

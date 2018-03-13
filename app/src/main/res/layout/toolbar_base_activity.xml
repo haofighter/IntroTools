@@ -7,7 +7,7 @@
     <com.intro.hao.mytools.customview.NavigationBar
         android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
-        android:layout_height="55dp"></com.intro.hao.mytools.customview.NavigationBar>
+        android:layout_height="56dp"></com.intro.hao.mytools.customview.NavigationBar>
 
     <RelativeLayout
         android:id="@+id/tool_base_content"

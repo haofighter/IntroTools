@@ -28,9 +28,13 @@ import com.intro.hao.mytools.base.BackCall
 import com.intro.hao.mytools.customview.NavigationBar
 import com.intro.hao.mytools.customview.NavigationTag
 import com.intro.hao.mytools.customview.richeditor.RichEditor
+import com.intro.project.secret.MainActivity
 import com.intro.project.secret.R
 import com.intro.project.secret.base.DrawarBaseActiivty
 import com.intro.project.secret.model.NoteInfo
+import com.intro.project.secret.widget.NoteWidgetProvider
+import com.vicpin.krealmextensions.query
+import com.vicpin.krealmextensions.queryFirst
 import com.vicpin.krealmextensions.save
 import kotlinx.android.synthetic.main.activity_edit_note.*
 import kotlinx.android.synthetic.main.font_set_layout.*
@@ -38,6 +42,8 @@ import java.util.*
 
 
 class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.OnTouchScreenListener {
+    var noteInfo: NoteInfo? = null
+
     override fun onReleaseScreen() {
 
     }
@@ -151,6 +157,10 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        richEditor.focusEditor()
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -170,6 +180,8 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
         }
     }
 
+
+    //更新图片上的进度条进度
     fun uploadImage(picturePath: String) {
         var i = 0
         val timer = Timer()
@@ -216,8 +228,21 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
         linkDialog.show()
     }
 
+    fun initContent() {
+        var id = intent.getStringExtra(NoteWidgetProvider().noteListExtra)
+        if (id != null) {
+            noteInfo = NoteInfo().queryFirst { this.equalTo("id", id) }
+            if (noteInfo != null) {
+                Log.i("获取到的原本内容", noteInfo!!.constent)
+                richEditor.html = noteInfo!!.constent
+            }
+        }
+    }
+
+
     override fun initView() {
         super.initView()
+        initContent()
         navigation.setRightText("保存")
         navigation.setTitle("写记事")
         navigation.setLeftImage(R.mipmap.home)
@@ -227,10 +252,14 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
                     NavigationTag.RIGHT_VIEW -> {
                         Log.i("TAG", "点击了完成")
                         saveNote()
+                        startActivity(Intent(this@EditNoteActivity, ShowNoteListActivity::class.java))
+                        finish()
                     }
                     NavigationTag.LEFT_VIEW -> {
                         if (richEditor.html.length != 0) {
-                            NoteInfo(richEditor.html, System.currentTimeMillis(), 0).save()
+                            saveNote()
+                            startActivity(Intent(this@EditNoteActivity, MainActivity::class.java))
+                            finish()
                             ToastUtils().showMessage("记事已保存")
                         }
 
@@ -249,14 +278,11 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
             override fun keyBoardShow(height: Int) {
                 richEditor.layout(richEditor.left, richEditor.top, richEditor.right, richEditor.bottom - height)
                 bottom_layout.layout(font_set_layout.left, richEditor.bottom, font_set_layout.right, richEditor.bottom + bottom_layout.height)
-
                 Log.i("", "修改后的高度" + richEditor.bottom + "键盘显示 高度" + height + "屏幕的高度" + SystemUtils().getScreenSize(this@EditNoteActivity).heightPixels + "     底部布局的高度" + bottom_layout.height + "底部布局" + bottom_layout.top + "---" + bottom_layout.bottom)
-                ToastUtils().showMessage("键盘显示 高度" + height + "   屏幕的高度" + SystemUtils().getScreenSize(this@EditNoteActivity).heightPixels)
             }
 
             override fun keyBoardHide(height: Int) {
                 richEditor.layout(richEditor.left, richEditor.top, richEditor.right, SystemUtils().getScreenSize(this@EditNoteActivity).heightPixels)
-                ToastUtils().showMessage("键盘隐藏 高度" + height)
             }
         })
     }
@@ -272,20 +298,29 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
                 override fun deal(tag: Any, vararg obj: Any) {
                     when (tag) {
                         R.id.confirm -> {
-                            NoteInfo(richEditor.html, System.currentTimeMillis(), 0).save()
+                            saveNoteInfo()
                             sendBroadcast(Intent("com.intro.project.sercret.note.refresh"))
-                            startActivity(Intent(this@EditNoteActivity, ShowNoteListActivity::class.java))
-                            finish()
+
                         }
                     }
                 }
             })
         } else {
-            NoteInfo(richEditor.html, System.currentTimeMillis(), 0).save()
+            saveNoteInfo()
             sendBroadcast(Intent("com.intro.project.sercret.note.refresh"))
-            startActivity(Intent(this@EditNoteActivity, ShowNoteListActivity::class.java))
-            finish()
         }
+    }
+
+    //保存记事至本地数据库
+    private fun saveNoteInfo() {
+        if (noteInfo != null) {
+            noteInfo!!.constent = richEditor.html
+            noteInfo!!.time = System.currentTimeMillis()
+            noteInfo!!.save()
+        } else {
+            NoteInfo(richEditor.html, System.currentTimeMillis(), 0, "" + System.currentTimeMillis()).save()
+        }
+
     }
 
 
@@ -315,7 +350,6 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
     }
 
     private fun initRichEditSetting() {
-
         richEditor.setEditorFontSize(15)
         richEditor.setPadding(10, 10, 10, 50)
         richEditor.setPlaceholder("填写笔记内容")
@@ -358,6 +392,7 @@ class EditNoteActivity : DrawarBaseActiivty(), View.OnClickListener, RichEditor.
                     when (tag) {
                         R.id.confirm -> {
 //                            showLoading()
+                            sendBroadcast(Intent("com.intro.project.sercret.note.refresh"))
                             startActivity(Intent(this@EditNoteActivity, ShowNoteListActivity::class.java))
                             finish()
                         }

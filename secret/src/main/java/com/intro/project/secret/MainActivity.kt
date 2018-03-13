@@ -1,19 +1,21 @@
 package com.intro.project.secret
 
+import android.app.NotificationManager
 import android.content.Intent
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import com.intro.hao.mytools.Utils.animalUtil.AnimalUtils
 import com.intro.hao.mytools.Utils.SharePreferenceUtils
+import com.intro.hao.mytools.Utils.ToastUtils
 import com.intro.hao.mytools.Utils.animalUtil.AnimalUtilsModel
 import com.intro.hao.mytools.base.App
 import com.intro.project.secret.TestAcivity.TestActivity
 import com.intro.project.secret.base.DrawarBaseActiivty
-import com.intro.project.secret.model.NoteInfo
 import com.intro.project.secret.moudle.WelcomeActivity
-import com.vicpin.krealmextensions.*
 import kotlinx.android.synthetic.main.activity_secret_main.*
+import android.app.PendingIntent
+import android.content.Context
+import android.support.v4.app.NotificationCompat
 
 
 class MainActivity : DrawarBaseActiivty(), View.OnClickListener {
@@ -68,21 +70,7 @@ class MainActivity : DrawarBaseActiivty(), View.OnClickListener {
         testAnimal.setOnClickListener(this)
 
         SharePreferenceUtils.get().setDate("userId", 1L)
-
-        Log.i("查询", " " + NoteInfo().queryAll().size)
-        Log.i("查询", " " + NoteInfo().queryAll().toString())
-
-        Log.i("查询123131", NoteInfo().query {
-            this.equalTo("userID", 0 as Int)
-                    .and().contains("constent", "123")
-                    .or().contains("constent", "345")
-        }.sortedByDescending { "time" }.toString())
-        NoteInfo().delete {
-            this.equalTo("userID", 0 as Int)
-                    .and().contains("constent", "123")
-                    .or().contains("constent", "345")
-        }
-        NoteInfo().queryFirst()
+        sendSimplestNotificationWithAction()
 
 //        var searchInfo: RealmResults<NoteInfo> = Realm.getDefaultInstance().where(NoteInfo::class.java).equalTo("userID", 0 as Int).findAll()
 //        searchInfo.addChangeListener((
@@ -99,6 +87,7 @@ class MainActivity : DrawarBaseActiivty(), View.OnClickListener {
     }
 
 
+    var finishTime: Long = 0
     /**
      * 监听Back键按下事件,方法2:
      * 注意:
@@ -108,8 +97,37 @@ class MainActivity : DrawarBaseActiivty(), View.OnClickListener {
      */
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            App.instance.finishActivty()
+            if (System.currentTimeMillis() - finishTime > 2000) {
+                finishTime = System.currentTimeMillis()
+                ToastUtils().showMessage("再次点击返回键退出APP")
+            } else {
+                App.instance.finishActivty()
+            }
+            return true
         }
         return super.onKeyDown(keyCode, event)
     }
+
+
+    /**
+     * 发送一个点击跳转到MainActivity的消息
+     */
+    private fun sendSimplestNotificationWithAction() {
+        var notifyManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        //获取PendingIntent
+        val mainIntent = Intent(this, MainActivity::class.java)
+        val mainPendingIntent = PendingIntent.getActivity(this, 0, mainIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        //创建 Notification.Builder 对象
+        val builder = NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                //点击通知后自动清除
+                .setAutoCancel(true)
+                .setContentTitle("我是带Action的Notification")
+                .setContentText("点我会打开MainActivity")
+                .setContentIntent(mainPendingIntent).build()
+        //发送通知
+        notifyManager.notify(1, builder)
+    }
+
+
 }
