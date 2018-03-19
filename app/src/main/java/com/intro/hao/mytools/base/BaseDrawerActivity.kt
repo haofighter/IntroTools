@@ -23,14 +23,12 @@ import kotlinx.android.synthetic.main.activity_side_base.*
  * 基础Activity  使用原生侧滑栏
  * 用于需要对界面软键盘进行监听的需求
  */
-abstract class BaseDrawerActivity : AppCompatActivity() {
+abstract class BaseDrawerActivity : BaseActivity() {
 
     lateinit var drawer: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.instance.nowActivity = this
-        App.instance.addActivty(this)
         super.setContentView(R.layout.activity_side_base)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -106,15 +104,6 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
 
     fun closeLeft() {
         drawer.closeDrawer(siding_content_left_layout);
-    }
-
-
-    fun showLoading() {
-        DialogUtils.instance.LoadingDialog(this, false).show()
-    }
-
-    fun closeLoading() {
-        DialogUtils.instance.LoadingDialog(this, false).dismiss()
     }
 
 

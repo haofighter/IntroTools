@@ -27,7 +27,6 @@ import com.intro.project.secret.model.NoteInfo
 import com.intro.project.secret.widget.NoteWidgetProvider
 import com.vicpin.krealmextensions.queryAll
 import kotlinx.android.synthetic.main.activity_show_note_list.*
-import kotlinx.android.synthetic.main.note_end_item.*
 import kotlinx.android.synthetic.main.note_end_item.view.*
 import kotlinx.android.synthetic.main.note_list_itemlayout.view.*
 
@@ -203,6 +202,14 @@ class NoteItemAdapter(backCall: BackCall) : Adapter<RecyclerView.ViewHolder>() {
                 itemView.note_image_content.visibility = View.GONE
             }
             itemView.note_time.text = DataUtils().FormatDate(noteInfo.time, "MM.dd HH:ss")
+
+
+            if (noteInfo.remindTime == 0L) {
+                itemView.clock_time_show_layout.visibility = View.GONE
+            } else {
+                itemView.clock_time_show_layout.visibility = View.VISIBLE
+                itemView.clock_time.text = DataUtils().FormatDate(noteInfo.remindTime, "MM.dd HH:ss")
+            }
             return this
         }
 

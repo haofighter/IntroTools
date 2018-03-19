@@ -12,11 +12,12 @@ import java.io.Serializable
 
 open class NoteInfo() : RealmObject(), Serializable {
 
-    constructor(constent: String, time: Long, userID: Int, id: String) : this() {
+    constructor(constent: String, time: Long, userID: Int, id: String, remindTime: Long) : this() {
         this.constent = constent
         this.time = time
         this.userID = userID
         this.id = id
+        this.remindTime = remindTime
     }
 
     var constent: String = "" //内容
@@ -24,6 +25,7 @@ open class NoteInfo() : RealmObject(), Serializable {
     @PrimaryKey
     var id: String = ""   //唯一标识id
     var time: Long = 0    //创建的时间
+    var remindTime: Long = 0    //提醒的时间
 
     override fun toString(): String {
         return constent + "  ----" + time + "  =====" + userID

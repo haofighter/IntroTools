@@ -10,31 +10,32 @@
     <uses-permission android:name="android.permission.BODY_SENSORS" />
     <uses-permission android:name="ndroid.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <!--
         android:name=".base.App"
         android:theme="@style/Theme.Design.Light.NoActionBar"
         android:icon="@mipmap/ic_launcher"
-        android:allowBackup="false"//是否允许备份-->
-    <application
+        android:allowBackup="false"//是否允许备份
+    -->
+    <application android:supportsRtl="true">
 
-        android:supportsRtl="true">
-
-        <!--多渠道打包配置-->
-        <!--<meta-data-->
-        <!--android:name="APK_SHOW"-->
-        <!--android:value="${APK_SHOW_VALUE}" />-->
-
-
-        <!--启动页设置-->
-        <!--<activity android:name=".home.activity.MainFlowingActivity">-->
-        <!--&lt;!&ndash;<intent-filter>&ndash;&gt;-->
-        <!--&lt;!&ndash;<action android:name="android.intent.action.MAIN" />&ndash;&gt;-->
-
-        <!--&lt;!&ndash;<category android:name="android.intent.category.LAUNCHER" />&ndash;&gt;-->
-        <!--&lt;!&ndash;</intent-filter>&ndash;&gt;-->
-        <!--</activity>-->
+        <!-- 多渠道打包配置 -->
+        <!-- <meta-data -->
+        <!-- android:name="APK_SHOW" -->
+        <!-- android:value="${APK_SHOW_VALUE}" /> -->
 
 
+        <!-- 启动页设置 -->
+        <!-- <activity android:name=".home.activity.MainFlowingActivity"> -->
+        <!-- &lt;!&ndash;<intent-filter>&ndash;&gt; -->
+        <!-- &lt;!&ndash;<action android:name="android.intent.action.MAIN" />&ndash;&gt; -->
+
+
+        <!-- &lt;!&ndash;<category android:name="android.intent.category.LAUNCHER" />&ndash;&gt; -->
+        <!-- &lt;!&ndash;</intent-filter>&ndash;&gt; -->
+        <!-- </activity> -->
+
+        <activity android:name=".base.BaseActivity"></activity>
     </application>
 
 </manifest>

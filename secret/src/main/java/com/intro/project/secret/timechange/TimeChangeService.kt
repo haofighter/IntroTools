@@ -15,12 +15,11 @@ class TimeChangeService : Service() {
     }
 
 
-    override fun onCreate() {
-        super.onCreate()
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_TIME_TICK)
         filter.addAction(Intent.ACTION_TIME_CHANGED)
         registerReceiver(TimeChangeReceiver(), filter)
+        return super.onStartCommand(intent, flags, startId)
     }
-
 }

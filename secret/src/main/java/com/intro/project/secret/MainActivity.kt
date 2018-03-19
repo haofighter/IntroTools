@@ -20,6 +20,7 @@ import android.support.v4.app.NotificationCompat
 
 class MainActivity : DrawarBaseActiivty(), View.OnClickListener {
     override fun onClick(v: View?) {
+
         when (v!!.id) {
             R.id.main_fab -> {
                 SharePreferenceUtils.get().clear()
@@ -79,7 +80,6 @@ class MainActivity : DrawarBaseActiivty(), View.OnClickListener {
 //                        Log.i("查询", " " + results.toString())
 //                    }
 //                }))
-
     }
 
     override fun LayoutID(): Int {
@@ -128,6 +128,4 @@ class MainActivity : DrawarBaseActiivty(), View.OnClickListener {
         //发送通知
         notifyManager.notify(1, builder)
     }
-
-
 }

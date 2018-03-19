@@ -1,6 +1,13 @@
 package com.intro.project.secret
 
 
+import android.support.test.InstrumentationRegistry
+import android.support.test.runner.AndroidJUnit4
+import com.intro.project.secret.model.NoteInfo
+import com.vicpin.krealmextensions.RealmConfigStore
+import com.vicpin.krealmextensions.save
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import org.junit.Test
 import org.junit.runner.RunWith
 

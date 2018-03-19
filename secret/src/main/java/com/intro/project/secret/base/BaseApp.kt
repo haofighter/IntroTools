@@ -1,8 +1,10 @@
 package com.intro.project.secret.base
 
+import android.content.Intent
 import com.intro.hao.mytools.base.App
 import com.intro.project.secret.model.ClockInfo
 import com.intro.project.secret.model.NoteInfo
+import com.intro.project.secret.timechange.TimeChangeService
 import com.vicpin.krealmextensions.RealmConfigStore
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -21,8 +23,14 @@ class BaseApp : App() {
         super.onCreate()
         instance = this
         initRealm()
+        startTimeService()
     }
 
+
+    fun startTimeService() {
+        val service = Intent(this, TimeChangeService::class.java)
+        startService(service)
+    }
 
     /**
      * 数据库框架初始化

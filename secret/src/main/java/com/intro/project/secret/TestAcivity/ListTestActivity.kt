@@ -23,7 +23,6 @@ import android.os.Bundle
 import android.os.Parcel
 import com.intro.hao.mytools.constant.AppConstant
 import com.intro.project.clock.clockutils.SpecialBackCall
-import com.intro.project.clock.service.AlarmService
 import com.intro.project.secret.moudle.note.EditNoteActivity
 import com.intro.project.secret.MainActivity
 
@@ -32,7 +31,7 @@ class ListTestActivity : DrawarBaseActiivty(), View.OnClickListener {
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onClick(p0: View?) {
-        var intent = Intent(this, AlarmService::class.java)
+//        var intent = Intent(this, AlarmService::class.java)
 //        intent.putExtra(AppConstant().BACK_CALL, object : SpecialBackCall(com.intro.hao.mytools.R.id.set_a_clock) {
 //
 //            override fun deal(vararg objects: Any) {

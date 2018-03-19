@@ -42,6 +42,7 @@ class TestActivity : DrawarBaseActiivty(), View.OnClickListener {
                 startService(intent)
             }
             add_weiget1 -> {
+                Log.i("闹钟信息", "时间监听")
 
                 val service = Intent(this, TimeChangeService::class.java)
                 startService(service)
@@ -51,8 +52,16 @@ class TestActivity : DrawarBaseActiivty(), View.OnClickListener {
                 clockInfo.clockID = System.currentTimeMillis()
                 clockInfo.clockStartTimeLong = System.currentTimeMillis() + 60000
                 clockInfo.clockType = "1"
+                clockInfo.reaptTime = 0
                 clockInfo.save()
-                Log.i("闹钟信息", "闹钟信息已存入数据库" + (System.currentTimeMillis() + 60000))
+
+                var clockInfo1 = ClockInfo()
+                clockInfo1.clockID = System.currentTimeMillis()
+                clockInfo1.clockStartTimeLong = System.currentTimeMillis() + 120000
+                clockInfo1.clockType = "1"
+                clockInfo1.reaptTime = 0
+                clockInfo1.save()
+                Log.i("闹钟信息", "闹钟信息已存入数据库" + clockInfo.clockStartTimeLong + "-----" + clockInfo1.clockStartTimeLong)
             }
         }
 

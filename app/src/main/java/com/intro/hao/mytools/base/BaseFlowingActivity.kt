@@ -22,12 +22,11 @@ import kotlinx.android.synthetic.main.flowing_content_layout.*
 /**
  * 基础Activity
  */
-abstract class BaseFlowingActivity : AppCompatActivity() {
+abstract class BaseFlowingActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.instance.addActivty(this)
-        super.setContentView(R.layout.activity_base_base)
+        setBaseContentView(R.layout.activity_base_base)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.statusBarColor = ContextCompat.getColor(this, R.color.traslant)
@@ -126,15 +125,6 @@ abstract class BaseFlowingActivity : AppCompatActivity() {
             Log.e("err", "侧滑栏是个空的")
             throw NullPointerException()
         }
-    }
-
-
-    fun showLoading() {
-        DialogUtils.instance.LoadingDialog(this, false).show()
-    }
-
-    fun closeLoading() {
-        DialogUtils.instance.LoadingDialog(this, false).dismiss()
     }
 
 
